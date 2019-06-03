@@ -13,5 +13,5 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build ./web/SwingDataViewer.sln --configuration $(buildConfiguration)
+- script: dotnet build web/SwingDataViewer/SwingDataViewer.csproj --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
