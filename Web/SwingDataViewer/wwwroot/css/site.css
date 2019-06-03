@@ -1,0 +1,232 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+.link {
+    font-size: 1.5em;
+}
+
+.chart {
+    padding-bottom: 20px;
+}
+
+
+.mainContents .buttons {
+    display: flex;
+}
+
+    .mainContents .buttons button, input[type="submit"] {
+        display: block;
+        width: 180px;
+        height: 50px;
+        box-sizing: border-box;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-width: 0;
+    }
+
+    .mainContents .buttons .submit {
+        background-color: #21bdd1;
+        color: #fff;
+        transition: all .2s;
+    }
+
+        .mainContents .buttons .submit:hover {
+            background-color: #64c9d6;
+        }
+
+        .mainContents .buttons .submit:disabled {
+            background-color: #21bdd1;
+            color: #ddd;
+        }
+
+    .mainContents .buttons .cancel {
+        margin-left: 18px;
+        background: #fff;
+        border: 2px solid #21bdd1;
+        color: #21bdd1;
+        transition: all .2s;
+        display: block;
+        width: 180px;
+        height: 50px;
+        box-sizing: border-box;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 45px;
+        text-align: center;
+    }
+
+        .mainContents .buttons .cancel:hover {
+            color: #fff;
+            border-color: #64c9d6;
+            background-color: #64c9d6;
+        }
+
+.formTable {
+    border-collapse: separate;
+    border-spacing: 0 2px;
+    width: 100%;
+}
+
+    .formTable th {
+        width: 280px;
+        padding: 14px 0 0 0;
+        color: #959596;
+        font-size: 1.5rem;
+        font-weight: normal;
+        line-height: 1.3;
+        text-align: left;
+        vertical-align: top;
+        box-sizing: border-box;
+    }
+
+    .formTable td {
+        padding: 16px;
+        background: #fff;
+    }
+
+        .formTable td span {
+            display: inline-block;
+            padding-left: 44px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 24px;
+        }
+
+    .formTable .valid {
+        color: #21d174;
+        background: url("../images/icon_valid.png") no-repeat 12px 50%;
+    }
+
+    .formTable .invalid {
+        color: #fa5b75;
+        background: url("../images/icon_invalid.png") no-repeat 12px 50%;
+    }
+
+    .formTable input[type="text"],
+    .formTable input[type="password"],
+    .formTable input[type="email"],
+    .formTable input[type="number"] {
+        width: 400px;
+        height: 40px;
+        padding: 0 14px;
+        background: #fff;
+        border: 1px solid #d1d1d4;
+        box-sizing: border-box;
+        font-size: 1.5rem;
+        transition: all .2s;
+    }
+
+        .formTable input[type="text"]:focus,
+        .formTable input[type="password"]:focus,
+        .formTable input[type="email"]:focus,
+        .formTable input[type="number"]:focus {
+            border-color: #21bdd1;
+        }
+
+    .formTable input::placeholder {
+        color: #959596;
+    }
+
+    .formTable input:-ms-input-placeholder {
+        color: #959596;
+    }
+
+    .formTable input::-ms-input-placeholder {
+        color: #959596;
+    }
+
+    .formTable button {
+        width: 320px;
+        height: 40px;
+        border: 2px solid #21bdd1;
+        box-sizing: border-box;
+        color: #21bdd1;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        transition: all .2s;
+    }
+
+        .formTable button:hover {
+            color: #fff;
+            border-color: #64c9d6;
+            background-color: #64c9d6;
+        }
+
+.information {
+    font-size: 1.1em;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.ok {
+    font-size: 1.4em;
+    padding: 10px;
+    color: #fff;
+    background-color: #64c9d6;
+}
+
+.ng {
+    font-size: 1.4em;
+    padding: 10px;
+    color: #fff;
+    background-color: #aa0000;
+}

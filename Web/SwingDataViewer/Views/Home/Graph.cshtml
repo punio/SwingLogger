@@ -1,0 +1,260 @@
+﻿@using System.Drawing
+@using SwingCommon
+@model SwingDataViewer.Models.GraphViewModel
+@{
+    ViewData["Title"] = "Swing Data Graph";
+}
+
+<div id="filterBox">
+    <div id="dateFilter">
+
+    </div>
+    <div style="margin-top:10px;">
+        @foreach (var club in Enum.GetValues(typeof(ClubType)))
+        {
+        <div class="pretty p-default ">
+            <input type="checkbox" name="club" value="@(club)" checked />
+            <div class="state @(club.ToString().ToLower())">
+                <label>@club</label>
+            </div>
+        </div>
+        }
+    </div>
+    <div style="margin-top:10px;">
+        <span>Y軸</span>
+        <select name="y">
+            <option value="headspeed">ヘッドスピード</option>
+            <option value="ballspeed">ボールスピード</option>
+            <option value="distance">飛距離</option>
+            <option value="meet" selected>ミート率</option>
+        </select>
+        <span style="margin-left:20px;">X軸</span>
+        <select name="x">
+            <option value="headspeed" selected>ヘッドスピード</option>
+            <option value="ballspeed">ボールスピード</option>
+            <option value="distance">飛距離</option>
+            <option value="meet">ミート率</option>
+        </select>
+    </div>
+</div>
+
+<div class="chart">
+    <canvas id="chartCanvas"></canvas>
+</div>
+
+<div class="chart">
+    <canvas id="pieChartCanvas"></canvas>
+</div>
+
+<span>ボールスピードが計測できないデータは素振りとして除外しています(30y以下のアプローチは大体除外されます)</span>
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" />
+    <style type="text/css">
+        @foreach(var kv in ColorTable.DefaultPalette)
+        {
+            <text>.pretty input:checked ~ .state.</text>@(kv.Key.ToString().ToLower()) <text> label:after {background-color: rgba(</text>@($"{kv.Value.R},{kv.Value.G},{kv.Value.B},{kv.Value.A / 255.0:f2}")<text>) !important}</text>
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+
+    <script>
+        var allData;
+        var filteredList;
+        var filteredData;
+        var pieChart;
+        var scatterChart;
+        var xAxis = "headspeed";
+        var yAxis = "meet";
+
+        var colorTable = {};
+        @foreach(var kv in ColorTable.DefaultPalette)
+        {
+            <text>colorTable['</text>@kv.Key<text>']='rgba(</text>@($"{kv.Value.R},{kv.Value.G},{kv.Value.B},{kv.Value.A / 255.0:f2}")<text>)';</text>
+        }
+
+        function getSelectedInputItems(name) {
+            var searchData = [];
+            $('[name=' + name + ']:checked').each(function() {
+                searchData.push($(this).val());
+            });
+            return searchData;
+        }
+
+        function groupBy(array, property) {
+            return array.reduce(
+                (group, item) => Object.assign(group,
+                    {
+                        [item[property]]: (group[item[property]] || []).concat(item)
+                    }),
+                {}
+            );
+        }
+
+        function updateChart() {
+            xAxis = $('[name=x]').val();
+            yAxis = $('[name=y]').val();
+            var selectedClubs = getSelectedInputItems("club");
+            var selectedDays = getSelectedInputItems("date");
+            filteredList = allData.filter(function(element) {
+                return element.ballSpeed > 0 && selectedClubs.indexOf(element.club) !== -1 && selectedDays.indexOf(element.date) !== -1;
+            });
+            filteredData = groupBy(filteredList, 'club');
+            $.each(filteredData,
+                function(key, values) {
+                    console.log(key + " : " + values.length);
+                });
+
+            createPieChart();
+            createScatterChart();
+        }
+
+        function createPieChart() {
+            var data = {
+                datasets: [
+                    {
+                        backgroundColor: [],
+                        data: []
+                    }
+                ],
+                labels: []
+            };
+
+            $.each(filteredData,
+                function(key, values) {
+                    data.datasets[0].backgroundColor.push(colorTable[key]);
+                    data.datasets[0].data.push(values.length);
+                    data.labels.push(key);
+                });
+
+            if (pieChart) {
+                pieChart.data = data;
+                pieChart.options.title.text = 'All balls (total ' + filteredList.length + ')';
+                pieChart.options.animation = false;
+                pieChart.update();
+            } else {
+                var ctx = document.getElementById('pieChartCanvas').getContext('2d');
+                pieChart = new Chart(ctx,
+                    {
+                        type: 'pie',
+                        data: data,
+                        options: {
+                            title: {
+                                display: true,
+                                text: 'All balls (total ' + filteredList.length + ')'
+                            }
+                        }
+                    });
+            }
+        }
+
+        function getScatterAxesLabel(axis) {
+            switch (axis) {
+                case "headspeed": return "ヘッドスピード(m/s)";
+                case "ballspeed": return "ボールスピード(m/s)";
+                case "distance": return "飛距離(yard)";
+                case "meet": return "ミート率";
+            }
+            return "";
+        }
+
+        function getData(axis,val) {
+            switch (axis) {
+            case "headspeed": return val.headSpeed;
+            case "ballspeed": return val.ballSpeed;
+            case "distance": return val.distance;
+            case "meet": return val.meet;
+            }
+            return 0;
+        }
+
+        function createScatterChart() {
+            var data = {
+                datasets: [],
+                labels: []
+            };
+            $.each(filteredData,
+                function(key, values) {
+                    var d = {
+                        label: key,
+                        backgroundColor: colorTable[key],
+                        data: []
+                    }
+                    $.each(values,
+                        function (index, val) {
+                            d.data.push({
+                                x: getData(xAxis,val),
+                                y:getData(yAxis,val)
+                            });
+                        });
+                    data.datasets.push(d);
+                });
+
+            if (scatterChart) {
+                scatterChart.data = data;
+                scatterChart.options.animation = false;
+                scatterChart.options.scales.yAxes[0].scaleLabel.labelString = getScatterAxesLabel(yAxis);
+                scatterChart.options.scales.xAxes[0].scaleLabel.labelString = getScatterAxesLabel(xAxis);
+                scatterChart.update();
+            } else {
+                var ctx = document.getElementById('chartCanvas').getContext('2d');
+                scatterChart = new Chart(ctx,
+                    {
+                        type:'scatter',
+                        data: data,
+                        options: {
+                            title: {
+                                display: true,
+                                text: 'GST-7 Swing data',
+                            },
+                            scales: {
+                                yAxes: [
+                                    {
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: getScatterAxesLabel(yAxis)
+                                        }
+                                    }
+                                ],
+                                xAxes: [
+                                    {
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: getScatterAxesLabel(xAxis)
+                                        }
+                                    }
+                                ]
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function(tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label;
+                                        return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                );
+            }
+        }
+
+        $(function() {
+            $.get('@Url.Action("Get", "Data", new {id = Model.User})',
+                function(data) {
+                    allData = data.swing;
+                    $.each(data.date, function (index, d) {
+                        $('#dateFilter').append('<div class="pretty p-default"><input type="checkbox" name="date" value="' + d +'" checked/><div class="state"><label>' + d + '</label></div></div>');
+                    });
+                    updateChart();
+                });
+
+            $(document).on('change','input',function() {updateChart();});
+            $('select').change(function () {updateChart(); });
+
+        });
+    </script>
+}

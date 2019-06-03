@@ -1,0 +1,14 @@
+﻿@using SwingCommon
+@model SwingDataViewer.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<ul>
+    @foreach (var logger in Model.Loggers)
+    {
+        <li>
+            <a asp-controller="Home" asp-action="Graph" asp-route-id="@logger" class="link">@logger</a>
+        </li>
+    }
+</ul>
