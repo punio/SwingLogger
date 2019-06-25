@@ -37,3 +37,6 @@ Ver.0.1リリースしました。Releaseからapk落とせます
 確認はnexus5のみなのでそれ以外の端末での動作は確認できていません
 
 Android端末があればな～～あればな～～
+
+## スマホアプリの使い方
+[MobileHelp.md](https://github.com/punio/SwingLogger/blob/master/MobileHelp.md)
