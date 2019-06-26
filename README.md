@@ -29,7 +29,12 @@
 一応マルチユーザーを考慮して作っているのでスマホのアプリを入れれば使えます
 
 ## iOSアプリについて
-誰も使わない(であろう)アプリを公開(またはTestFlight)するために99ドルお布施するのもな～～
+~~誰も使わない(であろう)アプリを公開(またはTestFlight)するために99ドルお布施するのもな～～~~ お布施しました
+
+[TestFlightでパブリックベータ中(https://testflight.apple.com/join/ozi6EsgV)](https://testflight.apple.com/join/ozi6EsgV)
+
+
+
 
 ## Androidアプリについて
 Ver.0.1リリースしました。Releaseからapk落とせます
