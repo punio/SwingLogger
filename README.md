@@ -15,9 +15,9 @@
 - クラウドでは全データを保存して統計画像的な感じで表示します
 
 # Sample
-[Web Page (http://swingdataviewer.azurewebsites.net/Home/Graph/811889)](http://swingdataviewer.azurewebsites.net/Home/Graph/811889)
+[Web Page (http://swingdataviewer.azurewebsites.net/Home/Graph/811889)](http://swingdataviewer.azurewebsites.net/Home/Graph/811889){:target="_blank"}
 
-[動画 (https://youtu.be/FKR3qnr_Cqs)](https://youtu.be/FKR3qnr_Cqs)
+[動画 (https://youtu.be/FKR3qnr_Cqs)](https://youtu.be/FKR3qnr_Cqs){:target="_blank"}
 
 
 # アプリについて
