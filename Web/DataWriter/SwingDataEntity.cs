@@ -10,6 +10,9 @@ namespace DataWriter
 	{
 		public string User { get; set; }
 
+		public string LocalDate { get; set; }
+		public string LocalTime { get; set; }
+
 		public DateTimeOffset Time { get; set; }
 		public string Dump { get; set; }
 

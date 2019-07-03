@@ -65,7 +65,9 @@ namespace DataWriter
 				HeadSpeed = request.HeadSpeed,
 				BallSpeed = request.BallSpeed,
 				Distance = request.Distance,
-				Meet = request.Meet
+				Meet = request.Meet,
+				LocalDate = request.Time.LocalDateTime.ToString("yyyy/MM/dd"),
+				LocalTime = request.Time.LocalDateTime.ToString("HH:mm:ss")
 			};
 
 			await dataTable.ExecuteAsync(TableOperation.InsertOrMerge(data));
