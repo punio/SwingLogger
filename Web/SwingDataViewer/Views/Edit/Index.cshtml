@@ -1,0 +1,53 @@
+﻿@model EditViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-controller="Edit" asp-action="DownloadData" class="download">全データダウンロード</a>
+</p>
+
+<table class="editTable">
+    <thead>
+        <tr>
+            <td></td>
+            <td>日時</td>
+            <td>クラブ</td>
+            <td>ヘッドスピード</td>
+            <td>ボールスピード</td>
+            <td>飛距離</td>
+            <td>ミート率</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var swing in Model.SwingData)
+        {
+        <tr>
+            <td><button onclick="DeleteRow('@swing.RowKey',this)">削除</button></td>
+            <td>@swing.DateTime</td>
+            <td>@swing.Club</td>
+            <td>@swing.HeadSpeed</td>
+            <td>@swing.BallSpeed</td>
+            <td>@swing.Distance</td>
+            <td>@swing.Meet</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+<script>
+        function DeleteRow(key, button) {
+            if (confirm("けしますよ？(元に戻せないよ)")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Edit")/' + key,
+                    type: 'DELETE',
+                    success: function (result) {
+                        var tr = button.parentNode.parentNode;
+                        tr.parentNode.deleteRow(tr.sectionRowIndex);
+                    }
+                });
+            }
+        }
+</script>
+}

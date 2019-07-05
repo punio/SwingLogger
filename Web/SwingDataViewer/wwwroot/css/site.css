@@ -230,3 +230,38 @@ body {
     color: #fff;
     background-color: #aa0000;
 }
+
+.download {
+    background: #000;
+    border: 2px solid #21bdd1;
+    color: #21bdd1;
+    padding: 5px 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    line-height: 39px;
+    text-align: center;
+    text-decoration: none;
+}
+
+    .download:hover {
+        text-decoration: none;
+    }
+
+.editTable tr:hover {
+    background-color: aliceblue;
+}
+
+.editTable td {
+    padding: 2px 8px 2px 8px;
+}
+
+    .editTable td button {
+        display: block;
+        width: 80px;
+        height: 26px;
+        box-sizing: border-box;
+        border-width: 0;
+        border: 1px solid black;
+        background: white;
+        color: #e00;
+    }

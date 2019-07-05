@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SwingCommon;
 
 namespace SwingDataViewer.Models
 {
 	public class SwingDataModel
 	{
+		[JsonIgnore]
+		public string RowKey { get; set; }
+		[JsonIgnore]
+		public string DateTime { get; set; }
+
 		public string Date { get; set; }
 
 		public ClubType ClubType { get; set; }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.WindowsAzure.Storage;
 using SwingDataViewer.Services;
 
@@ -32,6 +35,27 @@ namespace SwingDataViewer
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options => options.LoginPath = "/login")
+				.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+				{
+					RequireExpirationTime = true,
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = this.Configuration["Jwt:Issuer"],
+					ValidAudience = this.Configuration["Jwt:Issuer"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwt:Key"]))
+				});
+
+			services.AddCors(options => options.AddPolicy("CorsPolicy",
+				builder => builder.AllowAnyOrigin()
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials()
+					.Build()));
 
 			services.AddScoped(provider => CloudStorageAccount.Parse(Configuration.GetConnectionString("DefaultStorageConnection")));
 			services.AddScoped<TableService>();
@@ -57,12 +81,16 @@ namespace SwingDataViewer
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
+			app.UseAuthentication();
+
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}");
 			});
+
+			app.UseCors("CorsPolicy");
 		}
 	}
 }

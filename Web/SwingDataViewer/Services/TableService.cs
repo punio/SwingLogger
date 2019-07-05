@@ -110,6 +110,13 @@ namespace SwingDataViewer.Services
 			return user;
 		}
 
+		public async Task<UserModel> Authenticate(LoginViewModel loginViewModel)
+		{
+			var logger = await GetLogger(loginViewModel.Id, loginViewModel.Password);
+			return logger == null ? null : new UserModel(logger.DeviceId);
+		}
+
+
 		public async Task<SwingDataModel[]> GetSwingDatasAsync(string id)
 		{
 			var tableClient = _storageAccount.CreateCloudTableClient();
@@ -125,7 +132,9 @@ namespace SwingDataViewer.Services
 				var entities = await swingTable.ExecuteQuerySegmentedAsync(tableQuery, token);
 				result.AddRange(entities.Select(e => new SwingDataModel
 				{
-					Date = e.Time.ToString("yyyy/MM/dd"),
+					RowKey = e.RowKey,
+					DateTime = $"{e.LocalDate} {e.LocalTime}",
+					Date = e.LocalDate ?? e.Time.ToString("yyyy/MM/dd"),
 					ClubType = (ClubType)e.Club,
 					Club = ((ClubType)e.Club).ToString(),
 					HeadSpeed = e.HeadSpeed / 10.0,
@@ -136,6 +145,18 @@ namespace SwingDataViewer.Services
 				token = entities.ContinuationToken;
 			} while (token != null);
 			return result.ToArray();
+		}
+
+		public async Task DeleteSwingData(string id, string row) {
+			var tableClient = _storageAccount.CreateCloudTableClient();
+			var swingTable = tableClient.GetTableReference("SwingData");
+			var tableQuery = new TableQuery<SwingDataEntity>();
+			tableQuery.FilterString = TableQuery.CombineFilters(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, id),
+				TableOperators.And,
+				TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, row));
+			var data = (await swingTable.ExecuteQuerySegmentedAsync(tableQuery, null)).FirstOrDefault();
+			if (data != null) await swingTable.ExecuteAsync(TableOperation.Delete(data));
 		}
 	}
 }
