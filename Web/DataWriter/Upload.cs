@@ -60,14 +60,14 @@ namespace DataWriter
 				RowKey = $"{DateTimeOffset.MaxValue.Ticks - request.Time.Ticks:d19}_{Guid.NewGuid()}",
 				User = request.User,
 				Time = request.Time,
+				TimeOffset = request.Time.Offset.ToString(),
 				Dump = request.Dump,
 				Club = (int)request.Club,
 				HeadSpeed = request.HeadSpeed,
 				BallSpeed = request.BallSpeed,
 				Distance = request.Distance,
 				Meet = request.Meet,
-				LocalDate = request.Time.LocalDateTime.ToString("yyyy/MM/dd"),
-				LocalTime = request.Time.LocalDateTime.ToString("HH:mm:ss")
+				Tag = request.Tag
 			};
 
 			await dataTable.ExecuteAsync(TableOperation.InsertOrMerge(data));

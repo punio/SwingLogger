@@ -7,6 +7,8 @@ namespace SwingCommon
 		public string User { get; set; }
 
 		public DateTimeOffset Time { get; set; }
+		public TimeSpan TimeOffset { get; set; }	// DateTimeOffset -> JSONで時差が消えてしまうので・・
+
 		public string Dump { get; set; }
 
 		public ClubType Club { get; set; }
@@ -14,5 +16,7 @@ namespace SwingCommon
 		public int BallSpeed { get; set; }
 		public int Distance { get; set; }
 		public int Meet { get; set; }
+
+		public string Tag { get; set; }
 	}
 }

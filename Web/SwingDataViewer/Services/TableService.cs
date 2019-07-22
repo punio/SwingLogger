@@ -133,8 +133,8 @@ namespace SwingDataViewer.Services
 				result.AddRange(entities.Select(e => new SwingDataModel
 				{
 					RowKey = e.RowKey,
-					DateTime = $"{e.LocalDate} {e.LocalTime}",
-					Date = e.LocalDate ?? e.Time.ToString("yyyy/MM/dd"),
+					DateTime = $"{e.LocalTime.LocalDateTime:yyyy/MM/dd HH:mm:ss}",
+					Date = e.LocalTime.LocalDateTime.ToString("yyyy/MM/dd"),
 					ClubType = (ClubType)e.Club,
 					Club = ((ClubType)e.Club).ToString(),
 					HeadSpeed = e.HeadSpeed / 10.0,

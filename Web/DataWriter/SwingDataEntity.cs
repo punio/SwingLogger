@@ -10,10 +10,8 @@ namespace DataWriter
 	{
 		public string User { get; set; }
 
-		public string LocalDate { get; set; }
-		public string LocalTime { get; set; }
-
 		public DateTimeOffset Time { get; set; }
+		public string TimeOffset { get; set; }    // DateTimeOffset -> JSONで時差が消えてしまうので・・
 		public string Dump { get; set; }
 
 		public int Club { get; set; }
@@ -21,5 +19,7 @@ namespace DataWriter
 		public int BallSpeed { get; set; }
 		public int Distance { get; set; }
 		public int Meet { get; set; }
+
+		public string Tag { get; set; }
 	}
 }

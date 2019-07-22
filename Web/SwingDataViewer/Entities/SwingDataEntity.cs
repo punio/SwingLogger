@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 
 namespace SwingDataViewer.Entities
 {
@@ -10,10 +11,8 @@ namespace SwingDataViewer.Entities
 	{
 		public string User { get; set; }
 
-		public string LocalDate { get; set; }
-		public string LocalTime { get; set; }
-
 		public DateTimeOffset Time { get; set; }
+		public string TimeOffset { get; set; }    // DateTimeOffset -> JSONで時差が消えてしまうので・・
 		public string Dump { get; set; }
 
 		public int Club { get; set; }
@@ -21,5 +20,21 @@ namespace SwingDataViewer.Entities
 		public int BallSpeed { get; set; }
 		public int Distance { get; set; }
 		public int Meet { get; set; }
+
+		public string Tag { get; set; }
+
+
+
+		private DateTimeOffset _localTime = DateTimeOffset.MinValue;
+		[JsonIgnore]
+		public DateTimeOffset LocalTime
+		{
+			get
+			{
+				if (_localTime > DateTimeOffset.MinValue) return _localTime;
+				_localTime = TimeSpan.TryParse(TimeOffset, out var offset) ? Time.DateTime.Add(offset) : Time;
+				return _localTime;
+			}
+		}
 	}
 }
