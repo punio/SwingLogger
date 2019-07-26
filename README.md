@@ -7,7 +7,7 @@
 
 
 # 概要
-![概要](./Images/overview.png)
+![概要](./docs/Images/overview.png)
 
 - GST-7 BLEが垂れ流すBLEのデータをスマホアプリで受信します
 - スマホアプリからクラウド(Azure)にデータを転送します
@@ -44,4 +44,4 @@ Ver.0.1リリースしました。Releaseからapk落とせます
 Android端末があればな～～あればな～～
 
 ## スマホアプリの使い方
-[MobileHelp.md](https://github.com/punio/SwingLogger/blob/master/MobileHelp.md)
+[MobileHelp.md](https://punio.github.io/SwingLogger/MobileHelp.html)
