@@ -9,18 +9,21 @@ namespace SwingDataViewer.Models
 	public class UserModel
 	{
 		public string DeviceId { get; set; }
+		public string Name { get; set; }
 
-		public UserModel(string deviceId)
+		public UserModel(string deviceId, string name)
 		{
 			if (string.IsNullOrEmpty(deviceId)) return;
 			DeviceId = deviceId;
+			Name = name;
 		}
 
 		public static UserModel FromUserClaims(ClaimsPrincipal user)
 		{
-			var result = new UserModel(null);
+			var result = new UserModel(null, null);
 			if (!user.HasClaim(c => c.Type == "DeviceId")) return null;
 			result.DeviceId = user.Claims.First(c => c.Type == "DeviceId").Value;
+			result.Name = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
 			return result;
 		}
@@ -29,8 +32,9 @@ namespace SwingDataViewer.Models
 		{
 			return new[]
 			{
-				new Claim("DeviceId" , DeviceId)
-			};
+				new Claim("DeviceId" , DeviceId),
+				new Claim(ClaimTypes.Name,Name)
+		};
 		}
 	}
 }

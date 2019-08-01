@@ -12,7 +12,7 @@ namespace SwingDataViewer.Controllers
 {
 	public class HomeController : Controller
 	{
-		TableService _tableService;
+		readonly TableService _tableService;
 		ILogger _logger;
 
 		public HomeController(TableService tableService, ILogger<HomeController> logger)
@@ -25,7 +25,7 @@ namespace SwingDataViewer.Controllers
 		{
 			var viewModel = new HomeViewModel();
 			viewModel.Loggers = (await _tableService.GetRegisterdLoggers())
-				.Where(l => l.IncomingData)
+				.Where(l => l.IncomingData && l.Public)
 				.Select(l => l.DeviceId)
 				.Distinct()
 				.ToArray();
@@ -34,6 +34,14 @@ namespace SwingDataViewer.Controllers
 
 		public async Task<IActionResult> Graph(string id)
 		{
+			if (string.IsNullOrEmpty(id))
+			{
+				var user = UserModel.FromUserClaims(HttpContext.User);
+				id = user?.DeviceId;
+			}
+			if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+
+
 			var viewModel = new GraphViewModel();
 			if (id == "1") id = "CCF9DA6B-55FA-4039-A8B8-B93AC4D5B058";
 			viewModel.User = id;

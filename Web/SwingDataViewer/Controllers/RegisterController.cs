@@ -11,7 +11,7 @@ namespace SwingDataViewer.Controllers
 {
 	public class RegisterController : Controller
 	{
-		TableService _tableService;
+		readonly TableService _tableService;
 
 		public RegisterController(TableService tableService)
 		{
@@ -20,13 +20,13 @@ namespace SwingDataViewer.Controllers
 
 		public IActionResult Index()
 		{
-			return View(new RegisterViewModel());
+			return View(new RegisterViewModel { Name = "匿名" });
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Index(RegisterViewModel viewModel)
 		{
-			var result = await _tableService.RegisterNewId(viewModel.Id, viewModel.Password);
+			var result = await _tableService.RegisterNewId(viewModel);
 
 			viewModel.HaveResult = true;
 			viewModel.Error = string.IsNullOrEmpty(result);

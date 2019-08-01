@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SwingDataViewer.Models
 {
-	public class RegisterViewModel
+	public class UserViewModel
 	{
-		[Required]
-		[DisplayName("ID")]
-		public string Id { get; set; }
-
-		[Required]
-		[DisplayName("Password")]
-		public string Password { get; set; }
-
 		[DisplayName("NAME")]
 		public string Name { get; set; }
 
 		[DisplayName("公開")]
 		public bool Public { get; set; }
+
 
 		public bool HaveResult { get; set; }
 		public bool Error { get; set; }

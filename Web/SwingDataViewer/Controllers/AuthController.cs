@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SwingDataViewer.Models;
@@ -41,7 +42,7 @@ namespace SwingDataViewer.Controllers
 				var user = await _tableService.Authenticate(model);
 				if (user != null)
 				{
-					await LoginAsync(user);
+					await LoginAsync(HttpContext, user);
 
 					if (!string.IsNullOrEmpty(model.ReturnUrl))
 					{
@@ -57,11 +58,11 @@ namespace SwingDataViewer.Controllers
 			return View(model);
 		}
 
-		private async Task LoginAsync(UserModel user)
+		public static async Task LoginAsync(HttpContext context, UserModel user)
 		{
 			var identity = new ClaimsIdentity(user.ToClaims(), CookieAuthenticationDefaults.AuthenticationScheme);
 			var principal = new ClaimsPrincipal(identity);
-			await HttpContext.SignInAsync(principal, new AuthenticationProperties
+			await context.SignInAsync(principal, new AuthenticationProperties
 			{
 				IsPersistent = true,
 				ExpiresUtc = DateTime.UtcNow.AddDays(7)
@@ -80,6 +81,5 @@ namespace SwingDataViewer.Controllers
 
 			return RedirectToAction("Index", "Home");
 		}
-
 	}
 }

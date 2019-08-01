@@ -1,0 +1,48 @@
+﻿@model SwingDataViewer.Models.UserViewModel
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="mainContents">
+        <div class="alert">
+            <div asp-validation-summary="All"></div>
+        </div>
+
+        @if (Model.HaveResult)
+        {
+            <div class="@(Model.Error ? "ng" : "ok")">
+                @Model.Message
+            </div>
+        }
+
+        <table class="formTable">
+            <tbody>
+                <tr>
+                    <th>ニックネーム</th>
+                    <td>
+                        <input type="text" placeholder="Please enter your nickname" id="name" name="name" asp-for="Name" maxlength="256" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>データを公開</th>
+                    <td>
+                        <input type="checkbox" id="public" name="public" asp-for="Public" />
+                        <label for="public" class="checkbox">公開する</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <div class="buttons">
+                            <input type="submit" class="submit" value="更新" />
+                            <a asp-controller="Home" asp-action="Index" class="cancel">Cancel</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+}

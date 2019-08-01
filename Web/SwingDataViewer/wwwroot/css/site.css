@@ -58,6 +58,10 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
+    .footer img {
+        height: 40px;
+    }
+
 .link {
     font-size: 1.5em;
 }
@@ -229,6 +233,52 @@ body {
     padding: 10px;
     color: #fff;
     background-color: #aa0000;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+.checkbox {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 30px;
+    font-size: 1.3rem;
+    position: relative;
+    width: auto;
+}
+
+    .checkbox::before {
+        background: #fff;
+        border: 1px solid #231815;
+        content: '';
+        display: block;
+        height: 20px;
+        left: 5px;
+        margin-top: -8px;
+        position: absolute;
+        top: 50%;
+        width: 20px;
+    }
+
+    .checkbox::after {
+        border-right: 3px solid #64c9d6;
+        border-bottom: 3px solid #64c9d6;
+        content: '';
+        display: block;
+        height: 16px;
+        left: 11px;
+        margin-top: -7px;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        transform: rotate(45deg);
+        width: 8px;
+    }
+
+input[type=checkbox]:checked + .checkbox::after {
+    opacity: 1;
 }
 
 .download {

@@ -39,7 +39,7 @@ namespace SwingDataViewer.Services
 			return result.ToArray();
 		}
 
-		public async Task<string> RegisterNewId(string id, string password)
+		public async Task<string> RegisterNewId(RegisterViewModel viewModel)
 		{
 			var tableClient = _storageAccount.CreateCloudTableClient();
 			var loggerTable = tableClient.GetTableReference("SwingLogger");
@@ -54,7 +54,7 @@ namespace SwingDataViewer.Services
 				token = entities.ContinuationToken;
 			} while (token != null);
 
-			if (list.Any(u => u.Id == id)) return null;
+			if (list.Any(u => u.Id == viewModel.Id)) return null;
 
 			var salt = new byte[256 / 8];
 			using (var rng = RandomNumberGenerator.Create())
@@ -62,7 +62,7 @@ namespace SwingDataViewer.Services
 				rng.GetBytes(salt);
 			}
 			var passwordHash = "";
-			using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, salt, 10000))
+			using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(viewModel.Password, salt, 10000))
 			{
 				passwordHash = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256 / 8));
 			}
@@ -74,9 +74,11 @@ namespace SwingDataViewer.Services
 				PartitionKey = "0",
 				RowKey = deviceId,
 				DeviceId = deviceId,
-				Id = id,
+				Id = viewModel.Id,
 				Password = passwordHash,
-				Salt = Convert.ToBase64String(salt)
+				Salt = Convert.ToBase64String(salt),
+				Name = viewModel.Name,
+				Public = viewModel.Public
 			};
 
 			await loggerTable.ExecuteAsync(TableOperation.InsertOrMerge(logger));
@@ -110,10 +112,47 @@ namespace SwingDataViewer.Services
 			return user;
 		}
 
+		/// <summary>
+		/// こっちは認証済みユーザー用
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<SwingLoggerEntity> GetLogger(string id)
+		{
+			var tableClient = _storageAccount.CreateCloudTableClient();
+			var loggerTable = tableClient.GetTableReference("SwingLogger");
+			var tableQuery = new TableQuery<SwingLoggerEntity>();
+			tableQuery.FilterString = TableQuery.CombineFilters(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "0"),
+				TableOperators.And,
+				TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, id));
+			var userEntities = await loggerTable.ExecuteQuerySegmentedAsync(tableQuery, null);
+			return userEntities.FirstOrDefault();
+		}
+
+		public async Task<bool> UpdateLogger(string id, string name, bool canPublic)
+		{
+			var tableClient = _storageAccount.CreateCloudTableClient();
+			var loggerTable = tableClient.GetTableReference("SwingLogger");
+			var tableQuery = new TableQuery<SwingLoggerEntity>();
+			tableQuery.FilterString = TableQuery.CombineFilters(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "0"),
+				TableOperators.And,
+				TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, id));
+			var userEntities = await loggerTable.ExecuteQuerySegmentedAsync(tableQuery, null);
+			var user = userEntities.FirstOrDefault();
+			if (user == null) return false;
+
+			user.Name = name;
+			user.Public = canPublic;
+			await loggerTable.ExecuteAsync(TableOperation.Merge(user));
+			return true;
+		}
+
 		public async Task<UserModel> Authenticate(LoginViewModel loginViewModel)
 		{
 			var logger = await GetLogger(loginViewModel.Id, loginViewModel.Password);
-			return logger == null ? null : new UserModel(logger.DeviceId);
+			return logger == null ? null : new UserModel(logger.DeviceId, logger.Name);
 		}
 
 
@@ -147,7 +186,8 @@ namespace SwingDataViewer.Services
 			return result.ToArray();
 		}
 
-		public async Task DeleteSwingData(string id, string row) {
+		public async Task DeleteSwingData(string id, string row)
+		{
 			var tableClient = _storageAccount.CreateCloudTableClient();
 			var swingTable = tableClient.GetTableReference("SwingData");
 			var tableQuery = new TableQuery<SwingDataEntity>();

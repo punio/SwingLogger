@@ -14,5 +14,8 @@ namespace SwingDataViewer.Entities
 		public string Salt { get; set; }
 		public string Password { get; set; }
 		public bool IncomingData { get; set; }
+
+		public string Name { get; set; } = "匿名";
+		public bool Public { get; set; } = true;
 	}
 }
