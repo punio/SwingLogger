@@ -26,8 +26,7 @@ namespace SwingDataViewer.Controllers
 			var viewModel = new HomeViewModel();
 			viewModel.Loggers = (await _tableService.GetRegisterdLoggers())
 				.Where(l => l.IncomingData && l.Public)
-				.Select(l => l.DeviceId)
-				.Distinct()
+				.Select(l => new User { Id = l.DeviceId, Name = l.Name })
 				.ToArray();
 			return View(viewModel);
 		}

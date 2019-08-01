@@ -8,6 +8,12 @@ namespace SwingDataViewer.Models
 {
 	public class HomeViewModel
 	{
-		public string[] Loggers { get; set; }
+		public User[] Loggers { get; set; }
+	}
+
+	public class User
+	{
+		public string Id { get; set; }
+		public string Name { get; set; }
 	}
 }

@@ -8,7 +8,7 @@
     @foreach (var logger in Model.Loggers)
     {
         <li>
-            <a asp-controller="Home" asp-action="Graph" asp-route-id="@logger" class="link">@logger</a>
+            <a asp-controller="Home" asp-action="Graph" asp-route-id="@logger.Id" class="link">@logger.Name</a>
         </li>
     }
 </ul>
