@@ -14,8 +14,11 @@ namespace DataWriter.Entities
 		{
 			TotalDistance,
 			MaxHeadSpeed,
+			MinHeadSpeed,
 			MaxMeetRate,
 			MinMeetRate,
+			MaxDistance,
+			MinDistance,
 			TotalBalls
 		}
 

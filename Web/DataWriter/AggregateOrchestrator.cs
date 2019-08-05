@@ -113,6 +113,15 @@ namespace DataWriter
 			summary = new SwingSummaryEntity
 			{
 				PartitionKey = $"{from:yyyyMM}",
+				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinHeadSpeed}",
+				Type = (int)SwingSummaryEntity.SummaryType.MinHeadSpeed,
+				Result = temp.Min(d => d.HeadSpeed)
+			};
+			tableOperations.Add(TableOperation.InsertOrMerge(summary));
+
+			summary = new SwingSummaryEntity
+			{
+				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxMeetRate}",
 				Type = (int)SwingSummaryEntity.SummaryType.MaxMeetRate,
 				Result = temp.Max(d => d.Meet)
@@ -134,6 +143,24 @@ namespace DataWriter
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.TotalBalls}",
 				Type = (int)SwingSummaryEntity.SummaryType.TotalBalls,
 				Result = temp.Length
+			};
+			tableOperations.Add(TableOperation.InsertOrMerge(summary));
+
+			summary = new SwingSummaryEntity
+			{
+				PartitionKey = $"{from:yyyyMM}",
+				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxDistance}",
+				Type = (int)SwingSummaryEntity.SummaryType.MaxDistance,
+				Result = temp.Max(d => d.Distance)
+			};
+			tableOperations.Add(TableOperation.InsertOrMerge(summary));
+
+			summary = new SwingSummaryEntity
+			{
+				PartitionKey = $"{from:yyyyMM}",
+				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinDistance}",
+				Type = (int)SwingSummaryEntity.SummaryType.MinDistance,
+				Result = temp.Min(d => d.Distance)
 			};
 			tableOperations.Add(TableOperation.InsertOrMerge(summary));
 
