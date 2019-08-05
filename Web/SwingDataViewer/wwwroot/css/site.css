@@ -315,3 +315,11 @@ input[type=checkbox]:checked + .checkbox::after {
         background: white;
         color: #e00;
     }
+
+
+
+.card-deck > .card {
+    width: 40%;
+    flex-wrap: wrap;
+    flex: initial;
+}

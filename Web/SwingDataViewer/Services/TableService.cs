@@ -156,7 +156,7 @@ namespace SwingDataViewer.Services
 		}
 
 
-		public async Task<SwingDataModel[]> GetSwingDatasAsync(string id)
+		public async Task<SwingDataModel[]> GetSwingDatas(string id)
 		{
 			var tableClient = _storageAccount.CreateCloudTableClient();
 			var swingTable = tableClient.GetTableReference("SwingData");
@@ -197,6 +197,26 @@ namespace SwingDataViewer.Services
 				TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, row));
 			var data = (await swingTable.ExecuteQuerySegmentedAsync(tableQuery, null)).FirstOrDefault();
 			if (data != null) await swingTable.ExecuteAsync(TableOperation.Delete(data));
+		}
+
+
+		public async Task<SwingSummaryEntity[]> GetSummary(DateTime targetMonth)
+		{
+			var tableClient = _storageAccount.CreateCloudTableClient();
+			var summaryTable = tableClient.GetTableReference("SwingSummary");
+
+			var tableQuery = new TableQuery<SwingSummaryEntity>();
+			tableQuery.FilterString = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, targetMonth.ToString("yyyyMM"));
+
+			var result = new List<SwingSummaryEntity>();
+			TableContinuationToken token = null;
+			do
+			{
+				var entities = await summaryTable.ExecuteQuerySegmentedAsync(tableQuery, token);
+				result.AddRange(entities);
+				token = entities.ContinuationToken;
+			} while (token != null);
+			return result.ToArray();
 		}
 	}
 }

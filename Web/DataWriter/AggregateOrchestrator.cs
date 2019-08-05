@@ -55,13 +55,11 @@ namespace DataWriter
 
 			#region 集計 (前日までの月単位)
 			var to = DateTime.UtcNow.AddDays(-1);
-			var day = to.Day;
 			if (to.Day <= 1)
 			{
-				to = to.AddDays(-2);
-				day = DateTime.DaysInMonth(to.Year, to.Month);
+				to = to.AddMonths(-1);
 			}
-			to = new DateTime(to.Year, to.Month, day, 23, 59, 59);
+			to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23, 59, 59);
 			var from = new DateTime(to.Year, to.Month, 1, 0, 0, 0);
 			var rowKeyTo = $"{DateTime.MaxValue.Ticks - from.Ticks:d19}_{Guid.Empty}";
 			var rowKeyFrom = $"{DateTime.MaxValue.Ticks - (to.Ticks + 600000000):d19}_ffffffff-ffff-ffff-ffff-ffffffffffff";  // TimeSpan.FromMinutes(1).Ticks
@@ -96,6 +94,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.TotalDistance}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.TotalDistance,
 				Result = temp.Sum(d => d.Distance)
 			};
@@ -105,6 +104,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxHeadSpeed}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.MaxHeadSpeed,
 				Result = temp.Max(d => d.HeadSpeed)
 			};
@@ -114,6 +114,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinHeadSpeed}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.MinHeadSpeed,
 				Result = temp.Min(d => d.HeadSpeed)
 			};
@@ -123,6 +124,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxMeetRate}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.MaxMeetRate,
 				Result = temp.Max(d => d.Meet)
 			};
@@ -132,6 +134,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinMeetRate}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.MinMeetRate,
 				Result = temp.Min(d => d.Meet)
 			};
@@ -141,6 +144,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.TotalBalls}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.TotalBalls,
 				Result = temp.Length
 			};
@@ -150,6 +154,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxDistance}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.MaxDistance,
 				Result = temp.Max(d => d.Distance)
 			};
@@ -159,6 +164,7 @@ namespace DataWriter
 			{
 				PartitionKey = $"{from:yyyyMM}",
 				RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinDistance}",
+				DeviceId = logger,
 				Type = (int)SwingSummaryEntity.SummaryType.MinDistance,
 				Result = temp.Min(d => d.Distance)
 			};

@@ -4,10 +4,353 @@
     ViewData["Title"] = "Home Page";
 }
 
-<ul>
+<h2>らんきんぐ</h2>
+
+<h3>@Model.ThisMonth.TargetDate</h3>
+<div class="container">
+    <div class="card-deck">
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>やっぱり気になる</span>
+                <h4 class="card-title">最大ヘッドスピード</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.MaxHeadSpeed.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.MaxHeadSpeed[i].User.Name</td>
+                                <td>@Model.ThisMonth.MaxHeadSpeed[i].Value m/s</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>遅く振って飛ばせ</span>
+                <h4 class="card-title">最小ヘッドスピード</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.MinHeadSpeed.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.MinHeadSpeed[i].User.Name</td>
+                                <td>@Model.ThisMonth.MinHeadSpeed[i].Value m/s</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>突き抜けろ</span>
+                <h4 class="card-title">最大飛距離</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.MaxDistance.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.MaxDistance[i].User.Name</td>
+                                <td>@Model.ThisMonth.MaxDistance[i].Value ヤード</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>装置の測定限界に挑戦</span>
+                <h4 class="card-title">最小飛距離</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.MinDistance.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.MinDistance[i].User.Name</td>
+                                <td>@Model.ThisMonth.MinDistance[i].Value ヤード</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>ギアに仕事をさせまくれ</span>
+                <h4 class="card-title">最大ミート率</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.MaxMeetRate.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.MaxMeetRate[i].User.Name</td>
+                                <td>@Model.ThisMonth.MaxMeetRate[i].Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>ボールの勢いを頃せ</span>
+                <h4 class="card-title">最小ミート率</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.MinMeetRate.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.MinMeetRate[i].User.Name</td>
+                                <td>@Model.ThisMonth.MinMeetRate[i].Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>ボールは行くよどこまでも</span>
+                <h4 class="card-title">合計飛距離</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.TotalDistance.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.TotalDistance[i].User.Name</td>
+                                <td>@Model.ThisMonth.TotalDistance[i].Value ヤード</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <span>財布と相談</span>
+                <h4 class="card-title">合計打数</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.ThisMonth.TotalBalls.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.ThisMonth.TotalBalls[i].User.Name</td>
+                                <td>@Model.ThisMonth.TotalBalls[i].Value 球</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<h3>@Model.LastMonth.TargetDate</h3>
+<div class="container">
+    <div class="card-deck">
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">最大ヘッドスピード</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.MaxHeadSpeed.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.MaxHeadSpeed[i].User.Name</td>
+                                <td>@Model.LastMonth.MaxHeadSpeed[i].Value m/s</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">最小ヘッドスピード</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.MinHeadSpeed.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.MinHeadSpeed[i].User.Name</td>
+                                <td>@Model.LastMonth.MinHeadSpeed[i].Value m/s</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">最大飛距離</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.MaxDistance.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.MaxDistance[i].User.Name</td>
+                                <td>@Model.LastMonth.MaxDistance[i].Value ヤード</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">最小飛距離</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.MinDistance.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.MinDistance[i].User.Name</td>
+                                <td>@Model.LastMonth.MinDistance[i].Value ヤード</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">最大ミート率</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.MaxMeetRate.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.MaxMeetRate[i].User.Name</td>
+                                <td>@Model.LastMonth.MaxMeetRate[i].Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">最小ミート率</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.MinMeetRate.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.MinMeetRate[i].User.Name</td>
+                                <td>@Model.LastMonth.MinMeetRate[i].Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">合計飛距離</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.TotalDistance.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.TotalDistance[i].User.Name</td>
+                                <td>@Model.LastMonth.TotalDistance[i].Value ヤード</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header">
+                <h4 class="card-title">合計打数</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        @for (var i = 0; i < Model.LastMonth.TotalBalls.Length; i++)
+                        {
+                            <tr>
+                                <th scope="row">@(i + 1)</th>
+                                <td>@Model.LastMonth.TotalBalls[i].User.Name</td>
+                                <td>@Model.LastMonth.TotalBalls[i].Value 球</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<h2>一覧</h2>
+<ul class="list-inline">
     @foreach (var logger in Model.Loggers)
     {
-        <li>
+        <li class="list-inline-item">
             <a asp-controller="Home" asp-action="Graph" asp-route-id="@logger.Id" class="link">@logger.Name</a>
         </li>
     }

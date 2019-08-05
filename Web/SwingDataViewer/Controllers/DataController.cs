@@ -26,7 +26,7 @@ namespace SwingDataViewer.Controllers
 		public async Task<TotalData> Get(string id)
 		{
 			var result = new TotalData();
-			result.Swing = (await _tableService.GetSwingDatasAsync(id)).OrderBy(c => c.ClubType).ThenBy(c => c.Date).ToArray();
+			result.Swing = (await _tableService.GetSwingDatas(id)).OrderBy(c => c.ClubType).ThenBy(c => c.Date).ToArray();
 			result.Date = result.Swing.Select(s => s.Date).Distinct().OrderBy(d => d).ToArray();
 			return result;
 		}

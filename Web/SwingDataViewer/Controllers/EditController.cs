@@ -27,7 +27,7 @@ namespace SwingDataViewer.Controllers
 			if (user == null) return RedirectToAction("Login", "Auth", new { returnUrl = "~/edit/" });
 
 			var viewModel = new EditViewModel();
-			viewModel.SwingData = await _tableService.GetSwingDatasAsync(user.DeviceId);
+			viewModel.SwingData = await _tableService.GetSwingDatas(user.DeviceId);
 
 			return View(viewModel);
 		}
@@ -47,7 +47,7 @@ namespace SwingDataViewer.Controllers
 		{
 			var user = UserModel.FromUserClaims(HttpContext.User);
 			if (user == null) return RedirectToAction("Login", "Auth", new { returnUrl = "~/edit/" });
-			var allData = await _tableService.GetSwingDatasAsync(user.DeviceId);
+			var allData = await _tableService.GetSwingDatas(user.DeviceId);
 
 			var memoryStream = new MemoryStream();
 			var resultArchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true);
