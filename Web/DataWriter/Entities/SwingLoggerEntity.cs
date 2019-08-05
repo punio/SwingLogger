@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace DataWriter
+namespace DataWriter.Entities
 {
 	public class SwingLoggerEntity : TableEntity
 	{

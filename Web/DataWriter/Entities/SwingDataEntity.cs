@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.WindowsAzure.Storage.Table;
 using SwingCommon;
 
-namespace DataWriter
+namespace DataWriter.Entities
 {
 	public class SwingDataEntity : TableEntity
 	{

@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using DataWriter.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
