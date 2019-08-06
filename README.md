@@ -29,9 +29,8 @@
 一応マルチユーザーを考慮して作っているのでスマホのアプリを入れれば使えます
 
 ## iOSアプリについて
-~~誰も使わない(であろう)アプリを公開(またはTestFlight)するために99ドルお布施するのもな～～~~ お布施しました
 
-[TestFlightでパブリックベータ公開中(https://testflight.apple.com/join/ozi6EsgV)](https://testflight.apple.com/join/ozi6EsgV)
+[公開中](https://apps.apple.com/jp/app/swing-logger/id1469511261)
 
 
 
