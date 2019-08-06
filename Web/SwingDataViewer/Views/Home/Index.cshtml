@@ -149,6 +149,7 @@
                                 <th scope="row">@(i + 1)</th>
                                 <td>@Model.ThisMonth.TotalDistance[i].User.Name</td>
                                 <td>@Model.ThisMonth.TotalDistance[i].Value ヤード</td>
+                                <td class="small">@SwingDataViewer.Services.DistanceFunction.Abstract(Model.ThisMonth.TotalDistance[i].Value)</td>
                             </tr>
                         }
                     </tbody>
