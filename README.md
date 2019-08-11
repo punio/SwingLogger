@@ -28,10 +28,12 @@
 
 iOS/Android両方公開しました、お布施しました
 
+iOS
+https://apps.apple.com/us/app/swing-logger/id1469511261?mt=8
 
-<a style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/ja-jp/badge-lrg.svg?releaseDate=2019-08-06&kind=iossoftware&bubble=ios_apps) no-repeat;width:135px;height:40px;margin:10px;" href="https://apps.apple.com/us/app/swing-logger/id1469511261?mt=8"></a>
+Android
+https://play.google.com/store/apps/details?id=com.punio.SwingLogger&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1
 
-<a href='https://play.google.com/store/apps/details?id=com.punio.SwingLogger&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play で手に入れよう' src='https://play.google.com/intl/ja/badges/images/generic/ja_badge_web_generic.png' width="153"/></a>
 
 
 ## スマホアプリの使い方
