@@ -25,22 +25,14 @@
 スマホ側はXamarin.Formsで作っています。iOS/Androidに対応する予定で作っています。ソースはそのうちスマホ側も上げるかも
 
 ## 公開とか
-垂れ流されているデータを勝手に受信している非公式アプリなのでそもそもストアに登録とかどうなのこれ？Yさんに怒られるんじゃない？
-一応マルチユーザーを考慮して作っているのでスマホのアプリを入れれば使えます
 
-## iOSアプリについて
-
-[公開中](https://apps.apple.com/jp/app/swing-logger/id1469511261)
+iOS/Android両方公開しました、お布施しました
 
 
+<a style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/ja-jp/badge-lrg.svg?releaseDate=2019-08-06&kind=iossoftware&bubble=ios_apps) no-repeat;width:135px;height:40px;margin:10px;" href="https://apps.apple.com/us/app/swing-logger/id1469511261?mt=8"></a>
 
+<a href='https://play.google.com/store/apps/details?id=com.punio.SwingLogger&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play で手に入れよう' src='https://play.google.com/intl/ja/badges/images/generic/ja_badge_web_generic.png' width="153"/></a>
 
-## Androidアプリについて
-Ver.0.9リリースしました。Releaseからapk落とせます
-
-確認はnexus5のみなのでそれ以外の端末での動作は確認できていません
-
-Android端末があればな～～あればな～～
 
 ## スマホアプリの使い方
 [MobileHelp.md](https://punio.github.io/SwingLogger/MobileHelp.html)

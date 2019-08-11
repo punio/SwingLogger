@@ -23,7 +23,7 @@ namespace SwingDataViewer.Services
 			if (km < 552.6)
 			{
 				if (rand.Next(2) < 1) return $"山手線 {km / 34.5:f1}周分";       // 1周34.5km
-				else return $"大阪環状線 {km / 21.7:f1}本分"; // 1周21.7km 東京の山手線に対応するのは大阪環状線なのかな？
+				else return $"大阪環状線 {km / 21.7:f1}周分"; // 1周21.7km 東京の山手線に対応するのは大阪環状線なのかな？
 			}
 
 			if (km < 6550) return $"東京-新大阪 {km / (552.6 * 2):f1}往復";  // 東京-新大阪 552.6km
