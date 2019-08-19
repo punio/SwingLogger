@@ -48,7 +48,8 @@ namespace SwingDataViewer.Controllers
 			var result = new RegisteredDevice
 			{
 				Find = logger != null,
-				Id = logger?.DeviceId
+				Id = logger?.DeviceId,
+				Name = logger?.Name
 			};
 
 			return new JsonResult(result);

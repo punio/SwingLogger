@@ -8,5 +8,6 @@ namespace SwingCommon
 	{
 		public bool Find { get; set; }
 		public string Id { get; set; }
+		public string Name { get; set; }
 	}
 }
