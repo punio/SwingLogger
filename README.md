@@ -21,20 +21,25 @@
 
 
 # アプリについて
-## 使用フレームワーク
+
 スマホ側はXamarin.Formsで作っています。iOS/Androidに対応する予定で作っています。ソースはそのうちスマホ側も上げるかも
 
-## 公開とか
+## スマホアプリ
 
 iOS/Android両方公開しました、お布施しました
 
-iOS
-https://apps.apple.com/us/app/swing-logger/id1469511261?mt=8
+<a style="display: inline-block; overflow: hidden; background: url(https://linkmaker.itunes.apple.com/ja-jp/badge-lrg.svg?releaseDate=2019-08-19&kind=iossoftware&bubble=ios_apps) no-repeat; width: 218px; height: 65px; margin: 16px; background-size: contain;" href="https://apps.apple.com/us/app/swing-logger/id1469511261?mt=8">&#x200B;</a>
 
-Android
-https://play.google.com/store/apps/details?id=com.punio.SwingLogger&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1
+<a href='https://play.google.com/store/apps/details?id=com.punio.SwingLogger&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play で手に入れよう' src='https://play.google.com/intl/us-en/badges/images/generic/ja_badge_web_generic.png' width="250" height="97" style="vertical-align:baseline;" /></a>
 
 
 
 ## スマホアプリの使い方
 [MobileHelp.md](https://punio.github.io/SwingLogger/MobileHelp.html)
+
+
+## Webアプリ
+
+上記アプリで収集したデータの確認はWebアプリでおこないます
+
+[Web Page (http://swingdataviewer.azurewebsites.net/)](http://swingdataviewer.azurewebsites.net/)

@@ -38,32 +38,38 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     <ul class="navbar-nav mr-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Graph">データ表示</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Edit" asp-action="Index">データ編集</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Graph">データ表示</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Edit" asp-action="Index">データ編集</a>
+                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Start">はじめかた</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @User.Identity.Name
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-controller="User" asp-action="Index">ユーザー情報の編集</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item " asp-area="" asp-controller="Auth" asp-action="Logout">ログアウト</a>
-                            </div>
-                        </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @User.Identity.Name
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="User" asp-action="Index">ユーザー情報の編集</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item " asp-area="" asp-controller="Auth" asp-action="Logout">ログアウト</a>
+                                </div>
+                            </li>
                         }
                         else
                         {
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="Login">ログイン</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="Login">ログイン</a>
+                            </li>
                         }
 
                     </ul>
@@ -88,7 +94,7 @@
             &copy; PUNIO 2019 - SwingDataViewer
             <div class="float-right">
                 <a href="https://punio.github.io/SwingLogger/PrivacyPolicy.html" target="_blank">Privacy Policy</a>
-                <a href="https://github.com/punio/SwingLogger" target="_blank"><img src="~/images/GitHub_Logo.png"/></a>
+                <a href="https://github.com/punio/SwingLogger" target="_blank"><img src="~/images/GitHub_Logo.png" /></a>
             </div>
         </div>
     </footer>

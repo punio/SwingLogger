@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "How to play";
+}
+
+<h1>はじめかた</h1>
+
+<br />
+
+<h2>GST-7 BLEを用意します</h2>
+<p>
+    「ユピテル(YUPITERU) スイング練習機 Yupiteru GOLF GST-7 BLE」のデータを収集するものなので必須です。下のリンクから購入していただくと私がうれしいです
+    <br />
+    <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=punio-22&language=ja_JP&o=9&p=8&l=as4&m=amazon&f=ifr&ref=as_ss_li_til&asins=B06XCH23FT&linkId=0b5e3e7a94618f9721efde688449cc65"></iframe>
+</p>
+
+<br />
+<br />
+
+
+<h2>ユーザー登録をします</h2>
+<p>
+    画面右上の「<a asp-area="" asp-controller="Register" asp-action="Index">新規ユーザー登録</a>」を押してユーザー登録を行ってください
+    <br />
+    <img src="~/images/regist.jpg" />
+</p>
+
+<br />
+<br />
+
+
+<h2>スマートフォン用アプリ「Swing Logger」をインストールします</h2>
+<p>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <a style="display: inline-block; overflow: hidden; background: url(https://linkmaker.itunes.apple.com/ja-jp/badge-lrg.svg?releaseDate=2019-08-19&kind=iossoftware&bubble=ios_apps) no-repeat; width: 218px; height: 65px; margin: 16px; background-size: contain;" href="https://apps.apple.com/us/app/swing-logger/id1469511261?mt=8">&#x200B;</a>
+                </td>
+                <td>
+                    <a href='https://play.google.com/store/apps/details?id=com.punio.SwingLogger&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play で手に入れよう' src='https://play.google.com/intl/us-en/badges/images/generic/ja_badge_web_generic.png' width="250" height="97" style="vertical-align:baseline;" /></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</p>
+
+<br />
+<br />
+
+<h2>打ちっぱなします</h2>
+<p>
+    <a href="https://punio.github.io/SwingLogger/MobileHelp.html">スマホアプリの使い方</a>を参考に上記アプリを使用してデータを収集してください
+</p>
+
+<br />
+<br />
+
+
+<h2>結果を確認します</h2>
+<p>
+    ログイン状態でページを開くと「<a asp-area="" asp-controller="Home" asp-action="Graph">データ表示</a>」「<a asp-area="" asp-controller="Edit" asp-action="Index">データ編集</a>」が選択できるようになります
+    <br/>
+    <img src="~/images/data.jpg"/>
+</p>
+<br/>
+<p>
+    データ表示ではデータの確認ができます
+    <br/>
+    <img src="~/images/dataview.jpg"/>
+</p>
+<br/>
+<p>
+    データ編集ではデータの削除やCSV形式でのダウンロードができます
+    <br />
+    <img src="~/images/dataedit.jpg" />
+</p>
