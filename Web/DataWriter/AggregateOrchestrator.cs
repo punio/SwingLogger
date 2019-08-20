@@ -9,6 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
+using SwingCommon;
 
 namespace DataWriter
 {
@@ -59,8 +60,8 @@ namespace DataWriter
 			{
 				to = to.AddMonths(-1);
 			}
-			to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23, 59, 59);
-			var from = new DateTime(to.Year, to.Month, 1, 0, 0, 0);
+			to = new DateTime(to.Year, to.Month, DateTime.DaysInMonth(to.Year, to.Month), 23, 59, 59, DateTimeKind.Utc);
+			var from = new DateTime(to.Year, to.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 			var rowKeyTo = $"{DateTime.MaxValue.Ticks - from.Ticks:d19}_{Guid.Empty}";
 			var rowKeyFrom = $"{DateTime.MaxValue.Ticks - (to.Ticks + 600000000):d19}_ffffffff-ffff-ffff-ffff-ffffffffffff";  // TimeSpan.FromMinutes(1).Ticks
 			#endregion
@@ -90,6 +91,8 @@ namespace DataWriter
 			if (temp.Length <= 0) return;
 
 			var tableOperations = new TableBatchOperation();
+
+			#region 集計
 			var summary = new SwingSummaryEntity
 			{
 				PartitionKey = $"{from:yyyyMM}",
@@ -173,8 +176,73 @@ namespace DataWriter
 
 			var summaryTable = await binder.BindAsync<CloudTable>(new TableAttribute("SwingSummary"));
 			await summaryTable.CreateIfNotExistsAsync();
-
 			await summaryTable.ExecuteBatchAsync(tableOperations);
+			tableOperations.Clear();
+			#endregion
+
+			#region 統計
+			// クラブ毎の平均値とか
+			foreach (var club in Enum.GetValues(typeof(ClubType)))
+			{
+				var clubData = temp.Where(s => s.Club == (int)club).ToArray();
+				if (clubData.Length <= 0) continue;
+
+				var stat = new SwingStatisticsEntity
+				{
+					PartitionKey = logger,
+					RowKey = $"{from:yyyyMM}_{SwingStatisticsEntity.StatisticsType.HeadSpeedAverage}_{club}",
+					Time = from,
+					Club = (int)club,
+					Type = (int)SwingStatisticsEntity.StatisticsType.HeadSpeedAverage,
+					Result = Average(clubData.Select(c => c.HeadSpeed).ToArray())
+				};
+				tableOperations.Add(TableOperation.InsertOrMerge(stat));
+
+				stat = new SwingStatisticsEntity
+				{
+					PartitionKey = logger,
+					RowKey = $"{from:yyyyMM}_{SwingStatisticsEntity.StatisticsType.BallSpeedAverage}_{club}",
+					Time = from,
+					Club = (int)club,
+					Type = (int)SwingStatisticsEntity.StatisticsType.BallSpeedAverage,
+					Result = Average(clubData.Select(c => c.BallSpeed).ToArray())
+				};
+				tableOperations.Add(TableOperation.InsertOrMerge(stat));
+
+				stat = new SwingStatisticsEntity
+				{
+					PartitionKey = logger,
+					RowKey = $"{from:yyyyMM}_{SwingStatisticsEntity.StatisticsType.DistanceAverage}_{club}",
+					Time = from,
+					Club = (int)club,
+					Type = (int)SwingStatisticsEntity.StatisticsType.DistanceAverage,
+					Result = Average(clubData.Select(c => c.Distance).ToArray())
+				};
+				tableOperations.Add(TableOperation.InsertOrMerge(stat));
+
+				stat = new SwingStatisticsEntity
+				{
+					PartitionKey = logger,
+					RowKey = $"{from:yyyyMM}_{SwingStatisticsEntity.StatisticsType.MeetAverage}_{club}",
+					Time = from,
+					Club = (int)club,
+					Type = (int)SwingStatisticsEntity.StatisticsType.MeetAverage,
+					Result = Average(clubData.Select(c => c.Meet).ToArray())
+				};
+				tableOperations.Add(TableOperation.InsertOrMerge(stat));
+			}
+			var statTable = await binder.BindAsync<CloudTable>(new TableAttribute("SwingStatistics"));
+			await statTable.CreateIfNotExistsAsync();
+			await statTable.ExecuteBatchAsync(tableOperations);
+			tableOperations.Clear();
+			#endregion
+		}
+
+		private static double Average(int[] values)
+		{
+			if (values.Length < 20) return values.Average();    // 要素数が少ない時は全部の平均
+			var exCount = (int)(values.Length * 0.05);  // 前後5%を除外
+			return values.OrderBy(v => v).Skip(exCount).Take(values.Length - exCount * 2).Average();
 		}
 
 	}

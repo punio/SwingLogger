@@ -7,9 +7,9 @@ using SwingCommon;
 
 namespace SwingDataViewer.Models
 {
-	public class ColorTable
+	public static class ColorTable
 	{
-		public static Dictionary<ClubType, Color> DefaultPalette = new Dictionary<ClubType, Color>() {
+		public static Dictionary<ClubType, Color> DefaultPalette = new Dictionary<ClubType, Color> {
 			{ClubType.W1, Color.FromArgb(128,255,0,50)},
 			{ClubType.W3, Color.FromArgb(128,255,0,105)},
 			{ClubType.W5, Color.FromArgb(128,255,0,155)},
@@ -33,5 +33,11 @@ namespace SwingDataViewer.Models
 			{ClubType.LW, Color.FromArgb(128,0,0,64)},
 			{ClubType.PT, Color.FromArgb(128,0,0,0)},
 		};
+
+		public static string GetClubColor(ClubType club)
+		{
+			if (!DefaultPalette.TryGetValue(club, out var color)) return "rgb(255,255,255)";
+			return $"rgb({color.R},{color.G},{color.B})";
+		}
 	}
 }

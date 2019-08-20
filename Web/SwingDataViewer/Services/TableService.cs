@@ -218,5 +218,54 @@ namespace SwingDataViewer.Services
 			} while (token != null);
 			return result.ToArray();
 		}
+
+		public async Task<StatisticsData[]> GetStatistics(string id)
+		{
+			var tableClient = _storageAccount.CreateCloudTableClient();
+			var table = tableClient.GetTableReference("SwingStatistics");
+
+			var from = DateTime.UtcNow.AddMonths(-12);
+			var tableQuery = new TableQuery<SwingStatisticsEntity>();
+			tableQuery.FilterString = TableQuery.CombineFilters(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, id),
+				TableOperators.And,
+				TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThan, $"{from:yyyyMM_ZZ}"));
+
+			var result = new List<StatisticsData>();
+			TableContinuationToken token = null;
+
+			do
+			{
+				var entities = await table.ExecuteQuerySegmentedAsync(tableQuery, token);
+				foreach (var e in entities)
+				{
+					var data = result.FirstOrDefault(r => r.Time == e.Time && r.Club == (ClubType)e.Club);
+					if (data == null)
+					{
+						data = new StatisticsData { Time = e.Time, Club = (ClubType)e.Club };
+						result.Add(data);
+					}
+
+					switch ((SwingStatisticsEntity.StatisticsType)e.Type)
+					{
+					case SwingStatisticsEntity.StatisticsType.HeadSpeedAverage:
+						data.HeadSpeed = e.Result / 10;
+						break;
+					case SwingStatisticsEntity.StatisticsType.BallSpeedAverage:
+						data.BallSpeed = e.Result / 10;
+						break;
+					case SwingStatisticsEntity.StatisticsType.DistanceAverage:
+						data.Distance = e.Result;
+						break;
+					case SwingStatisticsEntity.StatisticsType.MeetAverage:
+						data.Meet = e.Result / 100;
+						break;
+					}
+				}
+
+				token = entities.ContinuationToken;
+			} while (token != null);
+			return result.OrderBy(r => r.Club).ThenByDescending(r => r.Time).ToArray();
+		}
 	}
 }

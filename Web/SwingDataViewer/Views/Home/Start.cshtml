@@ -59,17 +59,25 @@
 
 <h2>結果を確認します</h2>
 <p>
-    ログイン状態でページを開くと「<a asp-area="" asp-controller="Home" asp-action="Graph">データ表示</a>」「<a asp-area="" asp-controller="Edit" asp-action="Index">データ編集</a>」が選択できるようになります
-    <br/>
-    <img src="~/images/data.jpg"/>
+    ログイン状態でページを開くと「<a asp-area="" asp-controller="Home" asp-action="Graph">データ表示</a>」「<a asp-area="" asp-controller="Home" asp-action="Statistics">データ解析</a>」「<a asp-area="" asp-controller="Edit" asp-action="Index">データ編集</a>」が選択できるようになります
+    <br />
+    <img src="~/images/data.jpg" />
+    <br />
+    データ編集画面はログインしたユーザーのみ、データ表示・データ解析はURLを共有することで誰でも閲覧することができます
 </p>
-<br/>
+<br />
 <p>
     データ表示ではデータの確認ができます
-    <br/>
-    <img src="~/images/dataview.jpg"/>
+    <br />
+    <img src="~/images/dataview.jpg" />
 </p>
-<br/>
+<br />
+<p>
+    データ解析では解析っぽいことができたらいいなと、考えています(とりあえず月平均)
+    <br />
+    <img src="~/images/statistics.jpg" />
+</p>
+<br />
 <p>
     データ編集ではデータの削除やCSV形式でのダウンロードができます
     <br />

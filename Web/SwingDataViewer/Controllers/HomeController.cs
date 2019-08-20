@@ -42,12 +42,18 @@ namespace SwingDataViewer.Controllers
 			return View(viewModel);
 		}
 
-		public async Task<IActionResult> Graph(string id)
+		public IActionResult Start()
+		{
+			return View();
+		}
+
+		public IActionResult Graph(string id)
 		{
 			if (string.IsNullOrEmpty(id))
 			{
 				var user = UserModel.FromUserClaims(HttpContext.User);
 				id = user?.DeviceId;
+				if (!string.IsNullOrEmpty(id)) return RedirectToAction("Graph", new { id });
 			}
 			if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
@@ -56,9 +62,20 @@ namespace SwingDataViewer.Controllers
 			return View(viewModel);
 		}
 
-		public IActionResult Start()
+		public async Task<IActionResult> Statistics(string id)
 		{
-			return View();
+			if (string.IsNullOrEmpty(id))
+			{
+				var user = UserModel.FromUserClaims(HttpContext.User);
+				id = user?.DeviceId;
+				if (!string.IsNullOrEmpty(id)) return RedirectToAction("Statistics", new { id });
+			}
+			if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
+
+			var model = new StatisticsModel();
+			model.Data = await _tableService.GetStatistics(id);
+
+			return View(model);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
