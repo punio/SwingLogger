@@ -19,15 +19,16 @@ namespace DataWriter
 		public static async Task RunOrchestrator(
 			[OrchestrationTrigger] DurableOrchestrationContext context)
 		{
-			var loggers = await context.CallActivityAsync<string[]>("AggregateOrchestrator_LoggerList", null);
+			var loggers = await context.CallActivityAsync<SwingLoggerEntity[]>("AggregateOrchestrator_LoggerList", null);
 			foreach (var logger in loggers)
 			{
-				await context.CallActivityAsync("AggregateOrchestrator_Aggregate", logger);
+				if ((DateTimeOffset.UtcNow - logger.Timestamp).TotalDays >= 2.1) continue;	// 更新無ければ集計は意味無いからね (漏れないと思うけど一応更新後2日間は集計)
+				await context.CallActivityAsync("AggregateOrchestrator_Aggregate", logger.DeviceId);
 			}
 		}
 
 		[FunctionName("AggregateOrchestrator_LoggerList")]
-		public static async Task<string[]> LoggerList([ActivityTrigger] DurableActivityContext context,
+		public static async Task<SwingLoggerEntity[]> LoggerList([ActivityTrigger] DurableActivityContext context,
 			Binder binder,
 			ILogger log)
 		{
@@ -35,11 +36,11 @@ namespace DataWriter
 			var query = new TableQuery<SwingLoggerEntity>();
 			query.FilterString = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "0");
 			TableContinuationToken token = null;
-			var result = new List<string>();
+			var result = new List<SwingLoggerEntity>();
 			do
 			{
 				var entities = await table.ExecuteQuerySegmentedAsync(query, token);
-				result.AddRange(entities.Select(e => e.DeviceId));
+				result.AddRange(entities);
 				token = entities.ContinuationToken;
 			} while (token != null);
 

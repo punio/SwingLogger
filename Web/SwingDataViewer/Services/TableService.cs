@@ -197,6 +197,11 @@ namespace SwingDataViewer.Services
 				TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, row));
 			var data = (await swingTable.ExecuteQuerySegmentedAsync(tableQuery, null)).FirstOrDefault();
 			if (data != null) await swingTable.ExecuteAsync(TableOperation.Delete(data));
+
+			var logger = await GetLogger(id);
+			if (logger == null) return;
+			var loggerTable = tableClient.GetTableReference("SwingLogger");
+			await loggerTable.ExecuteAsync(TableOperation.Merge(logger));
 		}
 
 
