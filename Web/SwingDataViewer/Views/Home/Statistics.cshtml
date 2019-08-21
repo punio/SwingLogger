@@ -4,7 +4,8 @@
     ViewData["Title"] = "Statistics";
 }
 
-<h1>とりあえず月ごとの平均値でもだしてみる</h1>
+<h1>とりあえず月ごとの平均値*でもだしてみる</h1>
+<small>*中央90%の平均</small>
 
 @foreach (var kv in Model.Data.GroupBy(d => d.Club))
 {
