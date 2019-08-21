@@ -13,7 +13,7 @@ namespace DataWriter
 #if DEBUG
 			[TimerTrigger("0 */1 * * * *")]TimerInfo myTimer,
 #else
-			[TimerTrigger("0 3 3 * * *")]TimerInfo myTimer,
+			[TimerTrigger("0 3 18 * * *")]TimerInfo myTimer,
 #endif
 			[OrchestrationClient]DurableOrchestrationClient starter,
 			ILogger log)
