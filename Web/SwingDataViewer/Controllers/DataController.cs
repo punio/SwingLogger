@@ -27,7 +27,7 @@ namespace SwingDataViewer.Controllers
 		{
 			var result = new TotalData();
 			result.Swing = (await _tableService.GetSwingDatas(id)).OrderBy(c => c.ClubType).ThenBy(c => c.Date).ToArray();
-			result.Date = result.Swing.Select(s => s.Date).Distinct().OrderBy(d => d).ToArray();
+			result.Date = result.Swing.Select(s => s.Date).Distinct().OrderBy(d => d).Select(d => new Date(d)).ToArray();
 			return result;
 		}
 	}

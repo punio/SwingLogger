@@ -3,21 +3,39 @@
 @model SwingDataViewer.Models.GraphViewModel
 @{
     ViewData["Title"] = "Swing Data Graph";
+
+    var clubTypeList = new Dictionary<string, ClubType[]> {
+        {"ウッド", new[] { ClubType.W1, ClubType.W3, ClubType.W5, ClubType.W7, ClubType.W9 } },
+        {"ユーティリティ", new[] { ClubType.U2, ClubType.U3, ClubType.U4, ClubType.U5, ClubType.U6 } },
+        {"アイアン", new[] { ClubType.I3, ClubType.I4, ClubType.I5, ClubType.I6, ClubType.I7, ClubType.I8, ClubType.I9 } },
+        {"ウェッジ", new[] { ClubType.PW, ClubType.AW, ClubType.SW, ClubType.LW } },
+    };
 }
 
 <div id="filterBox">
     <div id="dateFilter">
 
     </div>
-    <div style="margin-top:10px;">
-        @foreach (var club in Enum.GetValues(typeof(ClubType)))
+    <div style="margin-top: 10px;">
+        @foreach (var kv in clubTypeList)
         {
-        <div class="pretty p-default ">
-            <input type="checkbox" name="club" value="@(club)" checked />
-            <div class="state @(club.ToString().ToLower())">
-                <label>@club</label>
+            <div>
+                <div class="pretty p-default clubParent">
+                    <input type="checkbox" name="club" checked class="baseCheck" />
+                    <div class="state @(kv.Value[0].ToString().ToLower())">
+                        <label>@kv.Key</label>
+                    </div>
+                </div>
+                @foreach (var club in kv.Value)
+                {
+                    <div class="pretty p-default clubChild">
+                        <input type="checkbox" name="club" value="@(club)" checked />
+                        <div class="state @(club.ToString().ToLower())">
+                            <label>@club</label>
+                        </div>
+                    </div>
+                }
             </div>
-        </div>
         }
     </div>
     <div style="margin-top:10px;">
@@ -242,19 +260,31 @@
             }
         }
 
-        $(function() {
+        $(function () {
             $.get('@Url.Action("Get", "Data", new {id = Model.User})',
-                function(data) {
+                function (data) {
                     allData = data.swing;
-                    $.each(data.date, function (index, d) {
-                        $('#dateFilter').append('<div class="pretty p-default"><input type="checkbox" name="date" value="' + d +'" checked/><div class="state"><label>' + d + '</label></div></div>');
+
+                    let dates = groupBy(data.date, 'month');
+                    $.each(dates, function (key, values) {
+                        let groupBox = $('<div></div>');
+                        let monthBox = $('<div class="pretty p-default dayParent"><input type="checkbox" name="club" checked class="baseCheck" /><div class="state"><label>' + key + '</label></div></div>');
+                        groupBox.append(monthBox);
+                        $.each(values, function (index, d) {
+                            groupBox.append('<div class="pretty p-default dayChild"><input type="checkbox" name="date" value="' + d.day + '" checked/><div class="state"><label>' + d.day + '</label></div></div>');
+                        });
+                        $('#dateFilter').append(groupBox);
                     });
                     updateChart();
-                });
 
-            $(document).on('change','input',function() {updateChart();});
-            $('select').change(function () {updateChart(); });
+                    $('.baseCheck').change(function () {
+                        const checked = $(this).prop("checked");
+                        $(this).parent().nextAll().children("input").prop("checked", checked);
+                    });
+               });
 
+            $(document).on('change', 'input', function () { updateChart(); });
+            $('select').change(function () { updateChart(); });
         });
     </script>
 }

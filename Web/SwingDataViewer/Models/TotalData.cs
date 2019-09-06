@@ -7,7 +7,19 @@ namespace SwingDataViewer.Models
 {
 	public class TotalData
 	{
-		public string[] Date { get; set; }
+		public Date[] Date { get; set; }
 		public SwingDataModel[] Swing { get; set; }
+	}
+
+	public class Date
+	{
+		public string Month { get; set; }
+		public string Day { get; set; }
+
+		public Date(string date)
+		{
+			if (date.Length > 7) Month = date.Substring(0, 7);
+			Day = date;
+		}
 	}
 }

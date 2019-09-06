@@ -28,9 +28,9 @@ namespace SwingDataViewer.Models
 			{ClubType.I8, Color.FromArgb(128,0,148,0)},
 			{ClubType.I9, Color.FromArgb(128,0,128,0)},
 			{ClubType.PW, Color.FromArgb(128,0,0,255)},
-			{ClubType.AW, Color.FromArgb(128,0,0,192)},
-			{ClubType.SW, Color.FromArgb(128,0,0,128)},
-			{ClubType.LW, Color.FromArgb(128,0,0,64)},
+			{ClubType.AW, Color.FromArgb(128,0,0,228)},
+			{ClubType.SW, Color.FromArgb(128,0,0,198)},
+			{ClubType.LW, Color.FromArgb(128,0,0,168)},
 			{ClubType.PT, Color.FromArgb(128,0,0,0)},
 		};
 

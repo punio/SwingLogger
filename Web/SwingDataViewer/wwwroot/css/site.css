@@ -70,6 +70,21 @@ body {
     padding-bottom: 20px;
 }
 
+.clubParent {
+    width: 140px;
+}
+
+.clubChild {
+    width: 50px;
+}
+
+.dayParent {
+    width: 140px;
+}
+
+.dayChild {
+    width: 120px;
+}
 
 .mainContents .buttons {
     display: flex;
