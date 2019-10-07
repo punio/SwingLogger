@@ -13,7 +13,7 @@ namespace SwingDataViewer.Entities
 
 		public enum StatisticsType
 		{
-			HeadSpeedAverage, BallSpeedAverage, DistanceAverage, MeetAverage
+			HeadSpeedAverage, BallSpeedAverage, DistanceAverage, MeetAverage, TotalBalls
 		}
 
 		public DateTime Time { get; set; }

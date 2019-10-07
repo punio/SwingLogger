@@ -266,6 +266,9 @@ namespace SwingDataViewer.Services
 					case SwingStatisticsEntity.StatisticsType.MeetAverage:
 						data.Meet = e.Result / 100;
 						break;
+					case SwingStatisticsEntity.StatisticsType.TotalBalls:
+						data.Total = (int)e.Result;
+						break;
 					}
 				}
 

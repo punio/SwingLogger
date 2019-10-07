@@ -22,7 +22,7 @@ namespace DataWriter
 			var loggers = await context.CallActivityAsync<SwingLoggerEntity[]>("AggregateOrchestrator_LoggerList", null);
 			foreach (var logger in loggers)
 			{
-				if ((DateTimeOffset.UtcNow - logger.Timestamp).TotalDays >= 2.1) continue;	// 更新無ければ集計は意味無いからね (漏れないと思うけど一応更新後2日間は集計)
+				if ((DateTimeOffset.UtcNow - logger.Timestamp).TotalDays >= 2.1) continue;  // 更新無ければ集計は意味無いからね (漏れないと思うけど一応更新後2日間は集計)
 				await context.CallActivityAsync("AggregateOrchestrator_Aggregate", logger.DeviceId);
 			}
 		}
@@ -229,6 +229,17 @@ namespace DataWriter
 					Club = (int)club,
 					Type = (int)SwingStatisticsEntity.StatisticsType.MeetAverage,
 					Result = Average(clubData.Select(c => c.Meet).ToArray())
+				};
+				tableOperations.Add(TableOperation.InsertOrMerge(stat));
+
+				stat = new SwingStatisticsEntity
+				{
+					PartitionKey = logger,
+					RowKey = $"{from:yyyyMM}_{SwingStatisticsEntity.StatisticsType.TotalBalls}_{club}",
+					Time = from,
+					Club = (int)club,
+					Type = (int)SwingStatisticsEntity.StatisticsType.TotalBalls,
+					Result = clubData.Count()
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(stat));
 			}
