@@ -55,10 +55,10 @@ namespace SwingDataViewer.Controllers
 			using (var stream = entry.Open())
 			using (var writer = new StreamWriter(stream, Encoding.UTF8))
 			{
-				writer.WriteLine("日時,クラブ,ヘッドスピード,ボールスピード,飛距離,ミート率");
+				writer.WriteLine("日時,クラブ,ヘッドスピード,ボールスピード,飛距離,ミート率,タグ");
 				foreach (var data in allData)
 				{
-					writer.WriteLine($"{data.DateTime},{data.Club},{data.HeadSpeed},{data.BallSpeed},{data.Distance},{data.Meet}");
+					writer.WriteLine($"{data.DateTime},{data.Club},{data.HeadSpeed},{data.BallSpeed},{data.Distance},{data.Meet},{data.Tag}");
 				}
 			}
 			resultArchive.Dispose();

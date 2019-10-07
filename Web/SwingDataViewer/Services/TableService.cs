@@ -179,7 +179,8 @@ namespace SwingDataViewer.Services
 					HeadSpeed = e.HeadSpeed / 10.0,
 					BallSpeed = e.BallSpeed / 10.0,
 					Meet = e.Meet / 100.0,
-					Distance = e.Distance
+					Distance = e.Distance,
+					Tag = e.Tag
 				}));
 				token = entities.ContinuationToken;
 			} while (token != null);

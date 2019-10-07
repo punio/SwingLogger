@@ -22,5 +22,7 @@ namespace SwingDataViewer.Models
 		public double BallSpeed { get; set; }
 		public int Distance { get; set; }
 		public double Meet { get; set; }
+
+		public string Tag { get; set; }
 	}
 }
