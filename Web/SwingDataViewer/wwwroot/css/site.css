@@ -66,6 +66,17 @@ body {
     font-size: 1.5em;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,0.7);
+}
+
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-nav .nav-link {
+        padding: 0 1rem 0 1rem;
+    }
+}
+
+
 .chart {
     padding-bottom: 20px;
 }
