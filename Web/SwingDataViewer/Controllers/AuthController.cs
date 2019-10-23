@@ -65,7 +65,7 @@ namespace SwingDataViewer.Controllers
 			await context.SignInAsync(principal, new AuthenticationProperties
 			{
 				IsPersistent = true,
-				ExpiresUtc = DateTime.UtcNow.AddDays(7)
+				ExpiresUtc = DateTime.UtcNow.AddDays(366)
 			});
 		}
 

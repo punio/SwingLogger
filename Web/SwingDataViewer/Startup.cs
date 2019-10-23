@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.WindowsAzure.Storage;
 using SwingDataViewer.Services;
@@ -50,21 +52,22 @@ namespace SwingDataViewer
 					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwt:Key"]))
 				});
 
-			services.AddCors(options => options.AddPolicy("CorsPolicy",
-				builder => builder.AllowAnyOrigin()
-					.AllowAnyMethod()
-					.AllowAnyHeader()
-					.AllowCredentials()
-					.Build()));
 
 			services.AddScoped(provider => CloudStorageAccount.Parse(Configuration.GetConnectionString("DefaultStorageConnection")));
 			services.AddScoped<TableService>();
 
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddLocalization(options => options.ResourcesPath = "Views");
+			services.AddRouting(options => options.LowercaseUrls = true);
+
+			services.AddMvc()
+				.AddViewLocalization(
+					LanguageViewLocationExpanderFormat.Suffix,
+					opts => opts.ResourcesPath = "Views")
+				.AddDataAnnotationsLocalization();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
@@ -81,16 +84,17 @@ namespace SwingDataViewer
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
-			app.UseAuthentication();
+			app.UseRouting();
 
-			app.UseMvc(routes =>
-			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
-			});
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseCors("CorsPolicy");
+
+			app.UseEndpoints(endpoints => {
+				endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+				endpoints.MapRazorPages();
+			});
 		}
 	}
 }
