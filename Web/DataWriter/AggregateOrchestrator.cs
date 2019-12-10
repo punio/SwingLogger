@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DataWriter.Entities;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
@@ -17,7 +18,7 @@ namespace DataWriter
 	{
 		[FunctionName("AggregateOrchestrator")]
 		public static async Task RunOrchestrator(
-			[OrchestrationTrigger] DurableOrchestrationContext context)
+			[OrchestrationTrigger] IDurableOrchestrationContext context)
 		{
 			var loggers = await context.CallActivityAsync<SwingLoggerEntity[]>("AggregateOrchestrator_LoggerList", null);
 			foreach (var logger in loggers)
@@ -28,7 +29,7 @@ namespace DataWriter
 		}
 
 		[FunctionName("AggregateOrchestrator_LoggerList")]
-		public static async Task<SwingLoggerEntity[]> LoggerList([ActivityTrigger] DurableActivityContext context,
+		public static async Task<SwingLoggerEntity[]> LoggerList([ActivityTrigger] IDurableActivityContext context,
 			Binder binder,
 			ILogger log)
 		{
@@ -48,7 +49,7 @@ namespace DataWriter
 		}
 
 		[FunctionName("AggregateOrchestrator_Aggregate")]
-		public static async Task Aggregate([ActivityTrigger] DurableActivityContext activityContext,
+		public static async Task Aggregate([ActivityTrigger] IDurableActivityContext activityContext,
 			Binder binder,
 			ExecutionContext context,
 			ILogger log)
