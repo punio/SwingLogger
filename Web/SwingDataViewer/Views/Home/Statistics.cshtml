@@ -3,38 +3,39 @@
 @{
     ViewData["Title"] = "Statistics";
 }
+<section class="basic">
 
-<h1>とりあえず月ごとの平均値*でもだしてみる</h1>
-<small>*中央90%の平均</small>
+    <h1>とりあえず月ごとの平均値*でもだしてみる</h1>
+    <small>*中央90%の平均</small>
 
-@foreach (var kv in Model.Data.GroupBy(d => d.Club))
-{
-    <h2 style="background-color:@ColorTable.GetClubColor(kv.Key)">@kv.Key</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>月</th>
-                <th>ヘッドスピード(m/s)</th>
-                <th>ボールスピード(m/s)</th>
-                <th>飛距離(yard)</th>
-                <th>ミート率</th>
-                <th>合計球数</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var data in kv)
-            {
+    @foreach (var kv in Model.Data.GroupBy(d => d.Club))
+    {
+        <h2 style="background-color:@ColorTable.GetClubColor(kv.Key)">@kv.Key</h2>
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>@data.Time.ToString("yyyy/MM")</td>
-                    <td>@data.HeadSpeed.ToString("f1")</td>
-                    <td>@data.BallSpeed.ToString("f1")</td>
-                    <td>@data.Distance.ToString("f0")</td>
-                    <td>@data.Meet.ToString("f2")</td>
-                    <td>@data.Total</td>
+                    <th>月</th>
+                    <th>ヘッドスピード(m/s)</th>
+                    <th>ボールスピード(m/s)</th>
+                    <th>飛距離(yard)</th>
+                    <th>ミート率</th>
+                    <th>合計球数</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var data in kv)
+                {
+                    <tr>
+                        <td>@data.Time.ToString("yyyy/MM")</td>
+                        <td>@data.HeadSpeed.ToString("f1")</td>
+                        <td>@data.BallSpeed.ToString("f1")</td>
+                        <td>@data.Distance.ToString("f0")</td>
+                        <td>@data.Meet.ToString("f2")</td>
+                        <td>@data.Total</td>
+                    </tr>
+                }
 
-        </tbody>
-    </table>
-}
-
+            </tbody>
+        </table>
+    }
+</section>

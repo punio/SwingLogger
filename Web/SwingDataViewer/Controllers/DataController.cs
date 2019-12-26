@@ -22,11 +22,15 @@ namespace SwingDataViewer.Controllers
 			_logger = logger;
 		}
 
-		[Route("{id}")]
-		public async Task<TotalData> Get(string id)
+		[HttpPost]
+		public async Task<TotalData> Graph([FromForm]DataRequestModel request)
 		{
 			var result = new TotalData();
-			result.Swing = (await _tableService.GetSwingDatas(id)).OrderBy(c => c.ClubType).ThenBy(c => c.Date).ToArray();
+			if (!DateTime.TryParseExact(request.From, "yyyyMMdd", null, System.Globalization.DateTimeStyles.AdjustToUniversal, out var from)) return result;
+			if (!DateTime.TryParseExact(request.To, "yyyyMMdd", null, System.Globalization.DateTimeStyles.AdjustToUniversal, out var to)) return result;
+			from = from.AddMinutes(request.Offset);
+			to = to.AddMinutes(request.Offset);
+			result.Swing = (await _tableService.GetSwingDatas(request.Id, from, to)).OrderBy(c => c.ClubType).ThenBy(c => c.Date).ToArray();
 			result.Date = result.Swing.Select(s => s.Date).Distinct().OrderBy(d => d).Select(d => new Date(d)).ToArray();
 			return result;
 		}

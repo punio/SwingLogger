@@ -11,6 +11,7 @@ a.navbar-brand {
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -48,6 +49,26 @@ body {
     margin-bottom: 60px;
 }
 
+header {
+    box-shadow: rgba(0,0,0,0.1) 0 0 3px 0;
+}
+
+p {
+    margin: 30px auto;
+}
+
+a {
+    font-weight: 600;
+}
+
+h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 49px;
+    margin: 17px auto;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -66,36 +87,171 @@ body {
     font-size: 1.5em;
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: rgba(255,255,255,0.7);
+.navbar-brand {
+    font-weight: 700;
 }
 
-@media (min-width: 576px) {
-    .navbar-expand-sm .navbar-nav .nav-link {
-        padding: 0 1rem 0 1rem;
+    .navbar-brand img {
+        width: 4vh;
+        border-radius: 6px;
     }
+
+.nav-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.bg-light .dropdown-menu {
+    background-color: #f0f1f4;
+}
+
+.container {
+    max-width: 100% !important;
+    padding: 0;
+}
+
+section.basic {
+    max-width: 1140px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.box {
+    padding: 0.4em 0.4em 0.4em 1.2em;
+}
+
+.start {
+    text-align: center;
+    padding: 0.4em 2em;
+}
+
+    .start table {
+        margin: auto;
+    }
+
+.onepoint {
+    margin: 50px;
+}
+
+    .onepoint .box {
+        border: double 5px #76aa2c;
+        background-color: rgba(118, 170, 44, 0.05);
+    }
+
+        .onepoint .box div {
+            margin: 0.5em;
+        }
+
+        .onepoint .box .title {
+            line-height: 1.5em;
+            padding: 0.5em 0 0.5em -1em;
+            color: #477208
+        }
+
+        .onepoint .box .body {
+            padding: 0.5em 0;
+        }
+
+
+.box .wraplist {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box .wrapitem {
+    display: block;
+    padding: 0.5em 2em;
 }
 
 
-.chart {
-    padding-bottom: 20px;
+
+section.ranking {
+    margin: 90px 0;
+    background-color: #cce0b0;
+    filter: drop-shadow(0 0 2px rgba(204,224,176,1));
 }
 
-.clubParent {
-    width: 140px;
+.ranking h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 30px;
 }
 
-.clubChild {
-    width: 50px;
+.ranking h2 {
+    font-size: 1.2rem;
+    padding: 10px;
+    color: #477208;
 }
 
-.dayParent {
-    width: 140px;
+.ranking .onepoint {
+    margin: 30px;
 }
 
-.dayChild {
-    width: 120px;
+    .ranking .onepoint p {
+        margin: 0 50px;
+        text-align: center;
+    }
+
+
+.ranking .card-deck {
+    margin: 0 40px;
 }
+
+.ranking .card {
+    width: 45%;
+    flex-wrap: wrap;
+    flex: initial;
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
+    .ranking .card .card-header {
+        padding: 0.2em 0.5em;
+    }
+
+        .ranking .card .card-header .comment {
+            font-size: 0.7em;
+            color: darkgray;
+        }
+
+        .ranking .card .card-header .card-title {
+            font-size: 1.1em;
+            margin-bottom: 0.25em;
+        }
+
+    .ranking .card .card-body {
+        padding: 0.25em 0.5em;
+    }
+
+        .ranking .card .card-body table {
+            margin: 0;
+        }
+
+            .ranking .card .card-body table th {
+                width: 50px;
+            }
+
+            .ranking .card .card-body table td, .ranking .card .card-body table th {
+                border: hidden;
+            }
+
+            .ranking .card .card-body table .multi {
+                line-height: 1em;
+            }
+
+                .ranking .card .card-body table .multi .small {
+                    font-size: 70%;
+                }
+
+            .ranking .card .card-body table tr td:nth-child(3) {
+                width: 150px;
+            }
+
 
 .mainContents .buttons {
     display: flex;
@@ -344,8 +500,59 @@ body {
 
 
 
-.card-deck > .card {
-    width: 40%;
-    flex-wrap: wrap;
-    flex: initial;
+
+
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-nav .nav-link {
+        padding: 0 1rem 0 1rem;
+    }
+
+    section.basic {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    section.basic {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    section.basic {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    section.basic {
+        max-width: 1140px;
+    }
+}
+
+@media (max-width: 768px) {
+    section.basic {
+        max-width: 540px;
+    }
+
+    section.dark {
+        margin: 50px 0;
+    }
+
+    .onepoint {
+        margin: 30px;
+    }
+
+    .ranking .onepoint p {
+        margin: 0;
+    }
+
+    .ranking .card {
+        width: 100%;
+    }
+
+
+    .box .wraplist {
+        width: 100%;
+    }
 }

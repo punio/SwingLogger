@@ -7,6 +7,5 @@ namespace SwingDataViewer.Models
 {
 	public class EditViewModel
 	{
-		public SwingDataModel[] SwingData { get; set; }
 	}
 }

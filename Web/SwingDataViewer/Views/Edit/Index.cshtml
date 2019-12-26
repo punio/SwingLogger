@@ -2,54 +2,145 @@
 @{
     ViewData["Title"] = "Swing Data Viewer";
 }
+<section class="basic">
 
-<p>
-    <a asp-controller="Edit" asp-action="DownloadData" class="download">全データダウンロード</a>
-</p>
+    <div id="filterBox">
+        <div>
+            <div class="datefilter">
+                <span class="title">データ期間</span>
 
-<table class="editTable">
-    <thead>
-        <tr>
-            <td></td>
-            <td>日時</td>
-            <td>クラブ</td>
-            <td>ヘッドスピード</td>
-            <td>ボールスピード</td>
-            <td>飛距離</td>
-            <td>ミート率</td>
-            <td>タグ</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var swing in Model.SwingData)
-        {
-        <tr>
-            <td><button onclick="DeleteRow('@swing.RowKey',this)">削除</button></td>
-            <td>@swing.DateTime</td>
-            <td>@swing.Club</td>
-            <td>@swing.HeadSpeed</td>
-            <td>@swing.BallSpeed</td>
-            <td>@swing.Distance</td>
-            <td>@swing.Meet</td>
-            <td>@swing.Tag</td>
-        </tr>
-        }
-    </tbody>
-</table>
+                <span>開始</span>
+                <div class="dategroup">
+                    <div class="input-group date" id="datetimepickerFrom" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepickerFrom" value="@DateTime.UtcNow.AddMonths(-1).AddHours(9).ToString("yyyy/MM/dd")" />
+                        <div class="input-group-append" data-target="#datetimepickerFrom" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <span class="endTitle">終了</span>
+                <div class="dategroup endDate">
+                    <div class="input-group date" id="datetimepickerTo" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepickerTo" value="@DateTime.UtcNow.AddHours(9).ToString("yyyy/MM/dd")" />
+                        <div class="input-group-append" data-target="#datetimepickerTo" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="showDataButtonGroup">
+                    <button id="showDataButton">表示</button>
+                </div>
+            </div>
+        </div>
+        <a asp-controller="Edit" asp-action="DownloadData" class="download">全データダウンロード</a>
+    </div>
+
+    <table class="editTable">
+        <thead>
+            <tr>
+                <td></td>
+                <td>日時</td>
+                <td>クラブ</td>
+                <td>ヘッドスピード</td>
+                <td>ボールスピード</td>
+                <td>飛距離</td>
+                <td>ミート率</td>
+                <td>タグ</td>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</section>
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/graph.css" />
+    </environment>
+}
 
 @section Scripts{
-<script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
         function DeleteRow(key, button) {
             if (confirm("けしますよ？(元に戻せないよ)")) {
                 $.ajax({
                     url: '@Url.Action("Delete", "Edit")/' + key,
                     type: 'DELETE',
-                    success: function (result) {
+                    success: function(result) {
                         var tr = button.parentNode.parentNode;
                         tr.parentNode.deleteRow(tr.sectionRowIndex);
                     }
                 });
             }
         }
-</script>
+
+        $(function() {
+            $('.date').datetimepicker({
+                locale: 'ja',
+                format: 'L'
+            });
+
+            $('#showDataButton').on('click',
+                function() {
+                    $("#showDataButton").prop('disabled', true);
+                    const from = moment($('#datetimepickerFrom').datetimepicker('viewDate')).format('YYYYMMDD');
+                    const to = moment($('#datetimepickerTo').datetimepicker('viewDate')).format('YYYYMMDD');
+
+                    $.post('@Url.Action("Post", "Edit")',
+                            {
+                                'from': from,
+                                'to': to,
+                                'offset': new Date().getTimezoneOffset()
+                            })
+                        .done(function(data) {
+                            const tableBody = $('.editTable tbody');
+                            tableBody.empty();
+                            $.each(data,
+                                function(index, swing) {
+                                    const row = "<tr><td><button onclick=\"DeleteRow('" +
+                                        swing.rowKey +
+                                        "',this)\">削除</button></td>" +
+                                        "<td>" +
+                                        swing.dateTime +
+                                        "</td>" +
+                                        "<td>" +
+                                        swing.club +
+                                        "</td>" +
+                                        "<td>" +
+                                        swing.headSpeed +
+                                        "</td>" +
+                                        "<td>" +
+                                        swing.ballSpeed +
+                                        "</td>" +
+                                        "<td>" +
+                                        swing.distance +
+                                        "</td>" +
+                                        "<td>" +
+                                        swing.meet +
+                                        "</td>" +
+                                        "<td>" +
+                                        swing.tag +
+                                        "</td>" +
+                                        "</tr>";
+                                    tableBody.append(row);
+                                });
+                        })
+                        .fail(function() {
+                            alert('データの取得に失敗しました');
+                        })
+                        .always(function () {
+                    $("#showDataButton").prop('disabled', false);
+                        });
+
+                });
+
+        });
+    </script>
 }

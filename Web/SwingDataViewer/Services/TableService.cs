@@ -156,13 +156,22 @@ namespace SwingDataViewer.Services
 		}
 
 
-		public async Task<SwingDataModel[]> GetSwingDatas(string id)
+		public async Task<SwingDataModel[]> GetSwingDatas(string id, DateTime from, DateTime to)
 		{
 			var tableClient = _storageAccount.CreateCloudTableClient();
 			var swingTable = tableClient.GetTableReference("SwingData");
 
 			var tableQuery = new TableQuery<SwingDataEntity>();
-			tableQuery.FilterString = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, id);
+			var rowKeyTo = $"{DateTime.MaxValue.Ticks - from.Ticks:d19}_{Guid.Empty}";
+			to = to.AddDays(1).AddSeconds(-1);
+			var rowKeyFrom = $"{DateTime.MaxValue.Ticks - to.Ticks:d19}_ffffffff-ffff-ffff-ffff-ffffffffffff";  // TimeSpan.FromMinutes(1).Ticks
+			tableQuery.FilterString = TableQuery.CombineFilters(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, id),
+				TableOperators.And,
+				TableQuery.CombineFilters(
+					TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThanOrEqual, rowKeyFrom),
+					TableOperators.And,
+					TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.LessThanOrEqual, rowKeyTo)));
 
 			var result = new List<SwingDataModel>();
 			TableContinuationToken token = null;

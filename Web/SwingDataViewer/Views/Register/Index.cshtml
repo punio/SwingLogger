@@ -4,104 +4,106 @@
     ViewData["Title"] = "Register";
 }
 
+<section class="basic">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="mainContents">
-        <div class="information">
-            スマートフォンからのデータを識別するための登録です。<br />
-            パスワードはハッシュ値のみを保存しますが、漏れて困るID/Passwordの組み合わせは使用しないでください。<br />
-            登録したID/Passwordはスマートフォンでデータを転送するときに使用します。
-        </div>
-
-        <div class="alert">
-            <div asp-validation-summary="All"></div>
-        </div>
-
-        @if (Model.HaveResult)
-        {
-            <div class="@(Model.Error ? "ng" : "ok")">
-                @Model.Message
+        <div class="mainContents">
+            <div class="information">
+                スマートフォンからのデータを識別するための登録です。<br />
+                パスワードはハッシュ値のみを保存しますが、漏れて困るID/Passwordの組み合わせは使用しないでください。<br />
+                登録したID/Passwordはスマートフォンでデータを転送するときに使用します。
             </div>
-        }
 
-        <table class="formTable">
-            <tbody>
-                <tr>
-                    <th>ID</th>
-                    <td>
-                        <input type="text" placeholder="Please enter upload id" id="userid" name="Id" asp-for="Id" maxlength="128" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>Password</th>
-                    <td>
-                        <input type="password" placeholder="Please enter password" id="password" name="password" asp-for="Password" maxlength="256" />
-                        <span id="passwordok" class="valid" style="display: none">OK</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Confirmation Password</th>
-                    <td>
-                        <input type="password" id="password2" placeholder="Please enter password again">
-                        <span id="password2ng" class="invalid" style="display: none">There is an error in the input content</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>ニックネーム</th>
-                    <td>
-                        <input type="text" placeholder="Please enter your nickname" id="name" name="name" asp-for="Name" maxlength="256" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>データを公開</th>
-                    <td>
-                        <input type="checkbox" id="public" name="public" asp-for="Public" />
-                        <label for="public" class="checkbox">公開する</label>
-                    </td>
-                </tr>
-                <tr>
-                    <th></th>
-                    <td>
-                        <div class="buttons">
-                            <input type="submit" class="submit" value="Register" />
-                            <a asp-controller="Home" asp-action="Index" class="cancel">Cancel</a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="alert">
+                <div asp-validation-summary="All"></div>
+            </div>
 
-    </div>
-}
-
-
-@section Scripts{
-    <script>
-        function checkInput() {
-            var disable = false;
-            var id = $('#userid').val();
-            var name = $('#username').val();
-            var n1 = $('#password').val();
-            var n2 = $('#password2').val();
-
-
-            if (id.length <= 0) {
-                disable = true;
+            @if (Model.HaveResult)
+            {
+                <div class="@(Model.Error ? "ng" : "ok")">
+                    @Model.Message
+                </div>
             }
-            if (n1 === n2) {
-                $('#password2ng').hide();
-            } else {
-                $('#password2ng').show();
-                disable = true;
-            }
-            $('.submit').prop('disabled', disable);
-        }
 
-        $(function () {
-            $('input').on('input', checkInput);
-        });
-    </script>
-}
+            <table class="formTable">
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td>
+                            <input type="text" placeholder="Please enter upload id" id="userid" name="Id" asp-for="Id" maxlength="128" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Password</th>
+                        <td>
+                            <input type="password" placeholder="Please enter password" id="password" name="password" asp-for="Password" maxlength="256" />
+                            <span id="passwordok" class="valid" style="display: none">OK</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Confirmation Password</th>
+                        <td>
+                            <input type="password" id="password2" placeholder="Please enter password again">
+                            <span id="password2ng" class="invalid" style="display: none">There is an error in the input content</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ニックネーム</th>
+                        <td>
+                            <input type="text" placeholder="Please enter your nickname" id="name" name="name" asp-for="Name" maxlength="256" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>データを公開</th>
+                        <td>
+                            <input type="checkbox" id="public" name="public" asp-for="Public" />
+                            <label for="public" class="checkbox">公開する</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                            <div class="buttons">
+                                <input type="submit" class="submit" value="Register" />
+                                <a asp-controller="Home" asp-action="Index" class="cancel">Cancel</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    }
+
+
+    @section Scripts{
+        <script>
+            function checkInput() {
+                var disable = false;
+                var id = $('#userid').val();
+                var name = $('#username').val();
+                var n1 = $('#password').val();
+                var n2 = $('#password2').val();
+
+
+                if (id.length <= 0) {
+                    disable = true;
+                }
+                if (n1 === n2) {
+                    $('#password2ng').hide();
+                } else {
+                    $('#password2ng').show();
+                    disable = true;
+                }
+                $('.submit').prop('disabled', disable);
+            }
+
+            $(function () {
+                $('input').on('input', checkInput);
+            });
+        </script>
+    }
+</section>

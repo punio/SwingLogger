@@ -70,6 +70,9 @@ namespace SwingDataViewer
 				.AddViewLocalization(
 					LanguageViewLocationExpanderFormat.Suffix,
 					opts => opts.ResourcesPath = "Views")
+#if DEBUG
+				.AddRazorRuntimeCompilation()
+#endif
 				.AddDataAnnotationsLocalization();
 		}
 
@@ -100,7 +103,8 @@ namespace SwingDataViewer
 
 			app.UseCors("CorsPolicy");
 
-			app.UseEndpoints(endpoints => {
+			app.UseEndpoints(endpoints =>
+			{
 				endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});

@@ -1,32 +1,34 @@
 ﻿@model SwingDataViewer.Models.LoginViewModel
 
-<main>
+<section class="basic">
+    <main>
 
-    <p>編集は登録者のみが可能です<br />登録したID/Passwordでログインしてください</p>
+        <p>編集は登録者のみが可能です<br />登録したID/Passwordでログインしてください</p>
 
-    @if (!ViewContext.ModelState.IsValid)
-    {
-        <div class="loginalert">
-            <div asp-validation-summary="All"></div>
-        </div>
-    }
-    <form asp-action="Login" method="post">
-        <table class="formTable">
-            <caption></caption>
-            <tbody>
-                <tr>
-                    <th><label for="id">@Html.DisplayNameFor(m => m.Id)</label></th>
-                    <td><input type="text" placeholder="@Html.DisplayNameFor(m => m.Id)" id="id" name="id" asp-for="Id" /></td>
-                </tr>
-                <tr>
-                    <th><label for="password">@Html.DisplayNameFor(m => m.Password)</label></th>
-                    <td><input type="password" placeholder="@Html.DisplayNameFor(m => m.Password)" id="password" name="password" asp-for="Password" /></td>
-                </tr>
-            </tbody>
-        </table>
-        <input type="hidden" name="returnUrl" asp-for="ReturnUrl" />
-        <div class="signin"><input type="submit" value="ログイン"></div>
-    </form>
+        @if (!ViewContext.ModelState.IsValid)
+        {
+            <div class="loginalert">
+                <div asp-validation-summary="All"></div>
+            </div>
+        }
+        <form asp-action="Login" method="post">
+            <table class="formTable">
+                <caption></caption>
+                <tbody>
+                    <tr>
+                        <th><label for="id">@Html.DisplayNameFor(m => m.Id)</label></th>
+                        <td><input type="text" placeholder="@Html.DisplayNameFor(m => m.Id)" id="id" name="id" asp-for="Id" /></td>
+                    </tr>
+                    <tr>
+                        <th><label for="password">@Html.DisplayNameFor(m => m.Password)</label></th>
+                        <td><input type="password" placeholder="@Html.DisplayNameFor(m => m.Password)" id="password" name="password" asp-for="Password" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" name="returnUrl" asp-for="ReturnUrl" />
+            <div class="signin"><input type="submit" value="ログイン"></div>
+        </form>
 
-</main>
+    </main>
 
+</section>

@@ -1,0 +1,96 @@
+﻿.chart {
+    padding-bottom: 20px;
+    height: 60vh;
+}
+
+.parent {
+    width: 140px;
+    font-weight: bold;
+}
+
+.clubChild {
+    width: 50px;
+}
+
+.dayChild {
+    width: 120px;
+}
+
+.parent .state label {
+    font-weight: bold;
+}
+
+.datefilter {
+    display: table;
+    padding-bottom: 10px;
+}
+
+    .datefilter span {
+        display: table-cell;
+        padding: 10px;
+    }
+
+    .datefilter .title {
+        width: 140px;
+    }
+
+    .datefilter .dategroup {
+        width: 220px;
+        padding-right: 40px;
+        display: table-cell;
+    }
+
+    .datefilter button {
+        display: table-cell;
+        width: 100px;
+        height: 38px;
+        box-sizing: border-box;
+        font-size: 1.1rem;
+        border-width: 0;
+        background-color: #21bdd1;
+        border-radius: 3px;
+        color: #fff;
+    }
+
+
+@media (max-width: 768px) {
+    .chart {
+        height: 40vh;
+    }
+
+    .parent {
+        width: 100px;
+    }
+
+    .dayChild {
+        width: 100px;
+    }
+
+    .datefilter {
+        display: grid;
+    }
+
+    .endTitle {
+        grid-row: 2;
+        grid-column: 2;
+    }
+
+    .datefilter .title {
+        width: 100px;
+    }
+
+    .endDate {
+        grid-row: 2;
+        grid-column: 3;
+    }
+
+    .datefilter .dategroup {
+        width: 180px;
+        padding-right: 30px;
+    }
+
+    .showDataButtonGroup {
+        grid-row: 1/3;
+        grid-column: 4;
+    }
+}

@@ -12,59 +12,90 @@
     };
 }
 
-<div id="filterBox">
-    <div id="dateFilter">
+<section class="basic">
+    <div id="filterBox">
+        <div>
+            <div class="datefilter">
+                <span class="title">データ期間</span>
 
-    </div>
-    <div style="margin-top: 10px;">
-        @foreach (var kv in clubTypeList)
-        {
-            <div>
-                <div class="pretty p-default clubParent">
-                    <input type="checkbox" name="club" checked class="baseCheck" />
-                    <div class="state @(kv.Value[0].ToString().ToLower())">
-                        <label>@kv.Key</label>
-                    </div>
-                </div>
-                @foreach (var club in kv.Value)
-                {
-                    <div class="pretty p-default clubChild">
-                        <input type="checkbox" name="club" value="@(club)" checked />
-                        <div class="state @(club.ToString().ToLower())">
-                            <label>@club</label>
+                <span>開始</span>
+                <div class="dategroup">
+                    <div class="input-group date" id="datetimepickerFrom" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepickerFrom" value="@DateTime.UtcNow.AddMonths(-3).AddHours(9).ToString("yyyy/MM/dd")" />
+                        <div class="input-group-append" data-target="#datetimepickerFrom" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
-                }
+                </div>
+
+                <span class="endTitle">終了</span>
+                <div class="dategroup endDate">
+                    <div class="input-group date" id="datetimepickerTo" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepickerTo" value="@DateTime.UtcNow.AddHours(9).ToString("yyyy/MM/dd")" />
+                        <div class="input-group-append" data-target="#datetimepickerTo" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="showDataButtonGroup">
+                    <button id="showDataButton">表示</button>
+                </div>
             </div>
-        }
+        </div>
+        <div id="dateFilter">
+
+        </div>
+        <div style="margin-top: 10px;">
+            @foreach (var kv in clubTypeList)
+            {
+                <div>
+                    <div class="pretty p-default parent">
+                        <input type="checkbox" name="club" checked class="baseCheck" />
+                        <div class="state @(kv.Value[0].ToString().ToLower())">
+                            <label>@kv.Key</label>
+                        </div>
+                    </div>
+                    @foreach (var club in kv.Value)
+                    {
+                        <div class="pretty p-default clubChild">
+                            <input type="checkbox" name="club" value="@(club)" checked />
+                            <div class="state @(club.ToString().ToLower())">
+                                <label>@club</label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div style="margin-top: 10px;">
+            <span>Y軸</span>
+            <select name="y">
+                <option value="headspeed">ヘッドスピード</option>
+                <option value="ballspeed">ボールスピード</option>
+                <option value="distance">飛距離</option>
+                <option value="meet" selected>ミート率</option>
+            </select>
+            <span style="margin-left: 20px;">X軸</span>
+            <select name="x">
+                <option value="headspeed" selected>ヘッドスピード</option>
+                <option value="ballspeed">ボールスピード</option>
+                <option value="distance">飛距離</option>
+                <option value="meet">ミート率</option>
+            </select>
+        </div>
     </div>
-    <div style="margin-top:10px;">
-        <span>Y軸</span>
-        <select name="y">
-            <option value="headspeed">ヘッドスピード</option>
-            <option value="ballspeed">ボールスピード</option>
-            <option value="distance">飛距離</option>
-            <option value="meet" selected>ミート率</option>
-        </select>
-        <span style="margin-left:20px;">X軸</span>
-        <select name="x">
-            <option value="headspeed" selected>ヘッドスピード</option>
-            <option value="ballspeed">ボールスピード</option>
-            <option value="distance">飛距離</option>
-            <option value="meet">ミート率</option>
-        </select>
+
+    <div class="chart">
+        <canvas id="chartCanvas"></canvas>
     </div>
-</div>
 
-<div class="chart">
-    <canvas id="chartCanvas"></canvas>
-</div>
+    <div class="chart">
+        <canvas id="pieChartCanvas"></canvas>
+    </div>
 
-<div class="chart">
-    <canvas id="pieChartCanvas"></canvas>
-</div>
-
-<span>ボールスピードが計測できないデータは素振りとして除外しています(30y以下のアプローチは大体除外されます)</span>
+    <span>ボールスピードが計測できないデータは素振りとして除外しています(30y以下のアプローチは大体除外されます)</span>
+</section>
 
 @section Styles{
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" />
@@ -74,10 +105,17 @@
             <text>.pretty input:checked ~ .state.</text>@(kv.Key.ToString().ToLower()) <text> label:after {background-color: rgba(</text>@($"{kv.Value.R},{kv.Value.G},{kv.Value.B},{kv.Value.A / 255.0:f2}")<text>) !important}</text>
         }
     </style>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/graph.css" />
+    </environment>
 }
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <script>
         var allData;
@@ -89,9 +127,10 @@
         var yAxis = "meet";
 
         var colorTable = {};
-        @foreach(var kv in ColorTable.DefaultPalette)
+        @foreach (var kv in ColorTable.DefaultPalette)
         {
-            <text>colorTable['</text>@kv.Key<text>']='rgba(</text>@($"{kv.Value.R},{kv.Value.G},{kv.Value.B},{kv.Value.A / 255.0:f2}")<text>)';</text>
+            <text>colorTable['</text>@kv.Key<text>'] =
+            'rgba(</text>@($"{kv.Value.R},{kv.Value.G},{kv.Value.B},{kv.Value.A / 255.0:f2}")<text>)';</text>
         }
 
         function getSelectedInputItems(name) {
@@ -118,7 +157,9 @@
             var selectedClubs = getSelectedInputItems("club");
             var selectedDays = getSelectedInputItems("date");
             filteredList = allData.filter(function(element) {
-                return element.ballSpeed > 0 && selectedClubs.indexOf(element.club) !== -1 && selectedDays.indexOf(element.date) !== -1;
+                return element.ballSpeed > 0 &&
+                    selectedClubs.indexOf(element.club) !== -1 &&
+                    selectedDays.indexOf(element.date) !== -1;
             });
             filteredData = groupBy(filteredList, 'club');
             $.each(filteredData,
@@ -160,6 +201,8 @@
                         type: 'pie',
                         data: data,
                         options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
                             title: {
                                 display: true,
                                 text: 'All balls (total ' + filteredList.length + ')'
@@ -171,20 +214,28 @@
 
         function getScatterAxesLabel(axis) {
             switch (axis) {
-                case "headspeed": return "ヘッドスピード(m/s)";
-                case "ballspeed": return "ボールスピード(m/s)";
-                case "distance": return "飛距離(yard)";
-                case "meet": return "ミート率";
+            case "headspeed":
+                return "ヘッドスピード(m/s)";
+            case "ballspeed":
+                return "ボールスピード(m/s)";
+            case "distance":
+                return "飛距離(yard)";
+            case "meet":
+                return "ミート率";
             }
             return "";
         }
 
-        function getData(axis,val) {
+        function getData(axis, val) {
             switch (axis) {
-            case "headspeed": return val.headSpeed;
-            case "ballspeed": return val.ballSpeed;
-            case "distance": return val.distance;
-            case "meet": return val.meet;
+            case "headspeed":
+                return val.headSpeed;
+            case "ballspeed":
+                return val.ballSpeed;
+            case "distance":
+                return val.distance;
+            case "meet":
+                return val.meet;
             }
             return 0;
         }
@@ -202,10 +253,10 @@
                         data: []
                     }
                     $.each(values,
-                        function (index, val) {
+                        function(index, val) {
                             d.data.push({
-                                x: getData(xAxis,val),
-                                y:getData(yAxis,val)
+                                x: getData(xAxis, val),
+                                y: getData(yAxis, val)
                             });
                         });
                     data.datasets.push(d);
@@ -221,9 +272,11 @@
                 var ctx = document.getElementById('chartCanvas').getContext('2d');
                 scatterChart = new Chart(ctx,
                     {
-                        type:'scatter',
+                        type: 'scatter',
                         data: data,
                         options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
                             title: {
                                 display: true,
                                 text: 'GST-7 Swing data',
@@ -260,31 +313,70 @@
             }
         }
 
-        $(function () {
-            $.get('@Url.Action("Get", "Data", new {id = Model.User})',
-                function (data) {
-                    allData = data.swing;
+        $(function() {
 
-                    let dates = groupBy(data.date, 'month');
-                    $.each(dates, function (key, values) {
-                        let groupBox = $('<div></div>');
-                        let monthBox = $('<div class="pretty p-default dayParent"><input type="checkbox" name="club" checked class="baseCheck" /><div class="state"><label>' + key + '</label></div></div>');
-                        groupBox.append(monthBox);
-                        $.each(values, function (index, d) {
-                            groupBox.append('<div class="pretty p-default dayChild"><input type="checkbox" name="date" value="' + d.day + '" checked/><div class="state"><label>' + d.day + '</label></div></div>');
+            $(document).on('change', 'input', function() { updateChart(); });
+            $('select').change(function() { updateChart(); });
+
+
+            $('.date').datetimepicker({
+                locale: 'ja',
+                format: 'L'
+            });
+
+            $('#showDataButton').on('click',
+                function() {
+                    $("#showDataButton").prop('disabled', true);
+                    const from = moment($('#datetimepickerFrom').datetimepicker('viewDate')).format('YYYYMMDD');
+                    const to = moment($('#datetimepickerTo').datetimepicker('viewDate')).format('YYYYMMDD');
+                    $.post('@Url.Action("Graph", "Data")',
+                            {
+                                'id': '@Model.User',
+                                'from': from,
+                                'to': to,
+                                'offset': new Date().getTimezoneOffset()
+                            })
+                        .done(function(data) {
+                            allData = data.swing;
+
+                            $('#dateFilter').empty();
+
+                            let dates = groupBy(data.date, 'month');
+                            $.each(dates,
+                                function(key, values) {
+                                    let groupBox = $('<div></div>');
+                                    let monthBox =
+                                        $(
+                                            '<div class="pretty p-default parent"><input type="checkbox" name="club" checked class="baseCheck" /><div class="state"><label>' +
+                                            key +
+                                            '</label></div></div>');
+                                    groupBox.append(monthBox);
+                                    $.each(values,
+                                        function(index, d) {
+                                            groupBox.append(
+                                                '<div class="pretty p-default dayChild"><input type="checkbox" name="date" value="' +
+                                                d.day +
+                                                '" checked/><div class="state"><label>' +
+                                                d.day +
+                                                '</label></div></div>');
+                                        });
+                                    $('#dateFilter').append(groupBox);
+                                });
+                            updateChart();
+
+                            $('.baseCheck').change(function() {
+                                const checked = $(this).prop("checked");
+                                $(this).parent().nextAll().children("input").prop("checked", checked);
+                            });
+                        })
+                        .fail(function() {
+                            alert('データの取得に失敗しました');
+                        })
+                        .always(function () {
+                            $("#showDataButton").prop('disabled', false);
                         });
-                        $('#dateFilter').append(groupBox);
-                    });
-                    updateChart();
 
-                    $('.baseCheck').change(function () {
-                        const checked = $(this).prop("checked");
-                        $(this).parent().nextAll().children("input").prop("checked", checked);
-                    });
-               });
-
-            $(document).on('change', 'input', function () { updateChart(); });
-            $('select').change(function () { updateChart(); });
+                });
         });
     </script>
 }
