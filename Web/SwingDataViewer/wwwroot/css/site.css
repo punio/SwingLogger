@@ -575,10 +575,34 @@ section.ranking {
             margin: 0;
         }
 
+    .ranking .card-deck {
+        margin: 0 20px;
+    }
+
     .ranking .card {
         width: 100%;
     }
 
+        .ranking .card .card-body table th {
+            width: 40px;
+        }
+
+        .ranking .card .card-body table td, .ranking .card .card-body table th {
+            border: hidden;
+            padding: 0.5em;
+        }
+
+        .ranking .card .card-body table .multi {
+            line-height: 1em;
+        }
+
+            .ranking .card .card-body table .multi .small {
+                font-size: 70%;
+            }
+
+        .ranking .card .card-body table tr td:nth-child(3) {
+            width: 120px;
+        }
 
     .box .wraplist {
         width: 100%;
