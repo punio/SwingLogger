@@ -52,6 +52,8 @@
         color: #fff;
     }
 
+.filterBox {
+}
 
 @media (max-width: 768px) {
     .chart {
@@ -59,7 +61,13 @@
     }
 
     .parent {
-        width: 100px;
+        width: calc(100% - 20px);
+        margin-top: 7px;
+    }
+
+    .clubChild {
+        width: 40px;
+        margin-right: 7px;
     }
 
     .dayChild {
@@ -68,6 +76,7 @@
 
     .datefilter {
         display: grid;
+        padding: 0;
     }
 
     .endTitle {
@@ -75,8 +84,14 @@
         grid-column: 2;
     }
 
+    .datefilter span {
+        padding: 0;
+        line-height: 30px;
+    }
+
     .datefilter .title {
-        width: 100px;
+        width: 85px;
+        padding: 0 5px;
     }
 
     .endDate {
@@ -85,12 +100,20 @@
     }
 
     .datefilter .dategroup {
-        width: 180px;
-        padding-right: 30px;
+        width: 150px;
+        padding-right: 10px;
     }
 
     .showDataButtonGroup {
         grid-row: 1/3;
         grid-column: 4;
+    }
+
+    .datefilter button {
+        width: 60px;
+    }
+
+    .filterBox {
+        margin: 0 5px;
     }
 }

@@ -510,6 +510,10 @@ section.ranking {
     section.basic {
         max-width: 540px;
     }
+
+    p {
+        margin: 15px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -539,13 +543,37 @@ section.ranking {
         margin: 50px 0;
     }
 
-    .onepoint {
-        margin: 30px;
+    p {
+        margin: 15px;
     }
 
-    .ranking .onepoint p {
+
+    h2 {
+        line-height: unset;
         margin: 0;
     }
+
+    section.ranking {
+        margin: 10px 0;
+    }
+
+    .ranking h1 {
+        font-weight: 700;
+        padding: 15px;
+    }
+
+    .ranking h2 {
+        line-height: unset;
+        margin: 0;
+    }
+
+    .ranking .onepoint {
+        margin: 10px;
+    }
+
+        .ranking .onepoint p {
+            margin: 0;
+        }
 
     .ranking .card {
         width: 100%;
