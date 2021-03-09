@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SwingCommon.Enum;
 using SwingDataViewer.Entities;
 using SwingDataViewer.Models;
 using SwingDataViewer.Services;
@@ -93,7 +94,7 @@ namespace SwingDataViewer.Controllers
 
 			#region TotalDistance
 			result.TotalDistance = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.TotalDistance)
+				.Where(s => s.DataType == SummaryType.TotalDistance)
 				.OrderByDescending(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -107,7 +108,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MaxHeadSpeed
 			result.MaxHeadSpeed = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.MaxHeadSpeed)
+				.Where(s => s.DataType == SummaryType.MaxHeadSpeed)
 				.OrderByDescending(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -121,7 +122,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MinHeadSpeed
 			result.MinHeadSpeed = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.MinHeadSpeed)
+				.Where(s => s.DataType == SummaryType.MinHeadSpeed)
 				.OrderBy(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -135,7 +136,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MaxMeetRate
 			result.MaxMeetRate = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.MaxMeetRate)
+				.Where(s => s.DataType == SummaryType.MaxMeetRate)
 				.OrderByDescending(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -149,7 +150,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MinMeetRate
 			result.MinMeetRate = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.MinMeetRate)
+				.Where(s => s.DataType == SummaryType.MinMeetRate)
 				.OrderBy(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -163,7 +164,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MaxDistance
 			result.MaxDistance = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.MaxDistance)
+				.Where(s => s.DataType == SummaryType.MaxDistance)
 				.OrderByDescending(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -177,7 +178,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MinDistance
 			result.MinDistance = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.MinDistance)
+				.Where(s => s.DataType == SummaryType.MinDistance)
 				.OrderBy(s => s.Result)
 				.Select(s => new SummaryData
 				{
@@ -191,7 +192,7 @@ namespace SwingDataViewer.Controllers
 
 			#region TotalBalls
 			result.TotalBalls = summary
-				.Where(s => s.DataType == SwingSummaryEntity.SummaryType.TotalBalls)
+				.Where(s => s.DataType == SummaryType.TotalBalls)
 				.OrderByDescending(s => s.Result)
 				.Select(s => new SummaryData
 				{

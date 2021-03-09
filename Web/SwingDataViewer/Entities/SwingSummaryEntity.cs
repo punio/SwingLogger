@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
+using SwingCommon.Enum;
 
 namespace SwingDataViewer.Entities
 {
@@ -10,18 +11,6 @@ namespace SwingDataViewer.Entities
 	{
 		// PartitionKey : yyyyMM
 		// RowKey : LoggerId + SummaryType
-
-		public enum SummaryType
-		{
-			TotalDistance,
-			MaxHeadSpeed,
-			MinHeadSpeed,
-			MaxMeetRate,
-			MinMeetRate,
-			MaxDistance,
-			MinDistance,
-			TotalBalls
-		}
 
 		public string DeviceId { get; set; }
 		public long Result { get; set; }

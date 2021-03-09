@@ -10,18 +10,6 @@ namespace DataWriter.Entities
 		// PartitionKey : yyyyMM
 		// RowKey : LoggerId + SummaryType
 
-		public enum SummaryType
-		{
-			TotalDistance,
-			MaxHeadSpeed,
-			MinHeadSpeed,
-			MaxMeetRate,
-			MinMeetRate,
-			MaxDistance,
-			MinDistance,
-			TotalBalls
-		}
-
 		public string DeviceId { get; set; }
 		public long Result { get; set; }
 		public int Type { get; set; }   // SummaryType

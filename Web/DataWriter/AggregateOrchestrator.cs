@@ -11,6 +11,7 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
 using SwingCommon;
+using SwingCommon.Enum;
 
 namespace DataWriter
 {
@@ -66,7 +67,8 @@ namespace DataWriter
 			targetDayList.Add(toDay);
 			#endregion
 
-			foreach (var targetDay in targetDayList) {
+			foreach (var targetDay in targetDayList)
+			{
 				var to = new DateTime(targetDay.Year, targetDay.Month, DateTime.DaysInMonth(targetDay.Year, targetDay.Month), 23, 59, 59, DateTimeKind.Utc);
 				var from = new DateTime(to.Year, to.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 				var rowKeyTo = $"{DateTime.MaxValue.Ticks - from.Ticks:d19}_{Guid.Empty}";
@@ -102,9 +104,9 @@ namespace DataWriter
 				var summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.TotalDistance}",
+					RowKey = $"{logger}_{SummaryType.TotalDistance}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.TotalDistance,
+					Type = (int)SummaryType.TotalDistance,
 					Result = temp.Sum(d => d.Distance)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -112,9 +114,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxHeadSpeed}",
+					RowKey = $"{logger}_{SummaryType.MaxHeadSpeed}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.MaxHeadSpeed,
+					Type = (int)SummaryType.MaxHeadSpeed,
 					Result = temp.Max(d => d.HeadSpeed)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -122,9 +124,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinHeadSpeed}",
+					RowKey = $"{logger}_{SummaryType.MinHeadSpeed}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.MinHeadSpeed,
+					Type = (int)SummaryType.MinHeadSpeed,
 					Result = temp.Min(d => d.HeadSpeed)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -132,9 +134,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxMeetRate}",
+					RowKey = $"{logger}_{SummaryType.MaxMeetRate}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.MaxMeetRate,
+					Type = (int)SummaryType.MaxMeetRate,
 					Result = temp.Max(d => d.Meet)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -142,9 +144,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinMeetRate}",
+					RowKey = $"{logger}_{SummaryType.MinMeetRate}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.MinMeetRate,
+					Type = (int)SummaryType.MinMeetRate,
 					Result = temp.Min(d => d.Meet)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -152,9 +154,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.TotalBalls}",
+					RowKey = $"{logger}_{SummaryType.TotalBalls}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.TotalBalls,
+					Type = (int)SummaryType.TotalBalls,
 					Result = temp.Length
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -162,9 +164,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MaxDistance}",
+					RowKey = $"{logger}_{SummaryType.MaxDistance}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.MaxDistance,
+					Type = (int)SummaryType.MaxDistance,
 					Result = temp.Max(d => d.Distance)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
@@ -172,9 +174,9 @@ namespace DataWriter
 				summary = new SwingSummaryEntity
 				{
 					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SwingSummaryEntity.SummaryType.MinDistance}",
+					RowKey = $"{logger}_{SummaryType.MinDistance}",
 					DeviceId = logger,
-					Type = (int)SwingSummaryEntity.SummaryType.MinDistance,
+					Type = (int)SummaryType.MinDistance,
 					Result = temp.Min(d => d.Distance)
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
