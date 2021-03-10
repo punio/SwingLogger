@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace SwingDataViewer.Controllers
 {
-	[Authorize]
+	[Route("[controller]")]
 	public class ApiController : ControllerBase
 	{
-		TableService _tableService;
+		readonly TableService _tableService;
 		ILogger _logger;
 
 		public ApiController(TableService tableService, ILogger<AuthController> logger)
@@ -25,11 +25,9 @@ namespace SwingDataViewer.Controllers
 			_logger = logger;
 		}
 
-		public async Task<IActionResult> Ranking()
+		[Route("ranking/{deviceId}")]
+		public async Task<IActionResult> Ranking(string deviceId)
 		{
-			var user = UserModel.FromUserClaims(HttpContext.User);
-			if (user == null) return Unauthorized();
-
 			var targetTime = DateTime.UtcNow;
 			var summary = await _tableService.GetSummary(targetTime);
 
@@ -37,7 +35,7 @@ namespace SwingDataViewer.Controllers
 
 			#region TotalDistance
 			var targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.TotalDistance).OrderByDescending(s => s.Result).ToArray();
-			var rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			var rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -48,7 +46,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MaxHeadSpeed
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.MaxHeadSpeed).OrderByDescending(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -59,7 +57,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MinHeadSpeed
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.MinHeadSpeed).OrderBy(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -70,7 +68,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MaxMeetRate
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.MaxMeetRate).OrderByDescending(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -81,7 +79,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MinMeetRate
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.MinMeetRate).OrderBy(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -92,7 +90,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MaxDistance
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.MaxDistance).OrderByDescending(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -103,7 +101,7 @@ namespace SwingDataViewer.Controllers
 
 			#region MinDistance
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.MinDistance).OrderBy(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
@@ -114,7 +112,7 @@ namespace SwingDataViewer.Controllers
 
 			#region TotalBalls
 			targetArray = summary.Where(s => s.DataType == SwingCommon.Enum.SummaryType.TotalBalls).OrderByDescending(s => s.Result).ToArray();
-			rank = Array.FindIndex(targetArray, a => a.DeviceId == user.DeviceId);
+			rank = Array.FindIndex(targetArray, a => a.DeviceId == deviceId);
 			if (rank >= targetArray.Length) rank = -1;
 			result.Add(new RankInformation
 			{
