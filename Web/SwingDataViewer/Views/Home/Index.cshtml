@@ -57,7 +57,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.MinHeadSpeed[i].User.Name</td>
+                                    <td @(Model.ThisMonth.MinHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MinHeadSpeed[i].User.Name</td>
                                     <td>@Model.ThisMonth.MinHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -78,7 +78,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.MaxDistance[i].User.Name</td>
+                                    <td @(Model.ThisMonth.MaxDistance[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MaxDistance[i].User.Name</td>
                                     <td>@Model.ThisMonth.MaxDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -99,7 +99,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.MinDistance[i].User.Name</td>
+                                    <td @(Model.ThisMonth.MinDistance[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MinDistance[i].User.Name</td>
                                     <td>@Model.ThisMonth.MinDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -120,7 +120,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.MaxMeetRate[i].User.Name</td>
+                                    <td @(Model.ThisMonth.MaxMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MaxMeetRate[i].User.Name</td>
                                     <td>@Model.ThisMonth.MaxMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -141,7 +141,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.MinMeetRate[i].User.Name</td>
+                                    <td @(Model.ThisMonth.MinMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MinMeetRate[i].User.Name</td>
                                     <td>@Model.ThisMonth.MinMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -162,7 +162,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.TotalDistance[i].User.Name</td>
+                                    <td @(Model.ThisMonth.TotalDistance[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.TotalDistance[i].User.Name</td>
                                     <td class="multi">
                                         @Model.ThisMonth.TotalDistance[i].Value ヤード
                                         <br />
@@ -191,7 +191,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.TotalBalls[i].User.Name</td>
+                                    <td @(Model.ThisMonth.TotalBalls[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.TotalBalls[i].User.Name</td>
                                     <td>@Model.ThisMonth.TotalBalls[i].Value 球</td>
                                 </tr>
                             }
@@ -217,7 +217,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.MaxHeadSpeed[i].User.Name</td>
+                                    <td @(Model.LastMonth.MaxHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MaxHeadSpeed[i].User.Name</td>
                                     <td>@Model.LastMonth.MaxHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -237,7 +237,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.MinHeadSpeed[i].User.Name</td>
+                                    <td @(Model.LastMonth.MinHeadSpeed[i].User.Unknown ? "class=unknown":"")>>@Model.LastMonth.MinHeadSpeed[i].User.Name</td>
                                     <td>@Model.LastMonth.MinHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -257,7 +257,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.MaxDistance[i].User.Name</td>
+                                    <td @(Model.LastMonth.MaxDistance[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MaxDistance[i].User.Name</td>
                                     <td>@Model.LastMonth.MaxDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -277,7 +277,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.MinDistance[i].User.Name</td>
+                                    <td @(Model.LastMonth.MinDistance[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MinDistance[i].User.Name</td>
                                     <td>@Model.LastMonth.MinDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -297,7 +297,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.MaxMeetRate[i].User.Name</td>
+                                    <td @(Model.LastMonth.MaxMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MaxMeetRate[i].User.Name</td>
                                     <td>@Model.LastMonth.MaxMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -317,7 +317,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.MinMeetRate[i].User.Name</td>
+                                    <td @(Model.LastMonth.MinMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MinMeetRate[i].User.Name</td>
                                     <td>@Model.LastMonth.MinMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -337,7 +337,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.TotalDistance[i].User.Name</td>
+                                    <td @(Model.LastMonth.TotalDistance[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.TotalDistance[i].User.Name</td>
                                     <td>@Model.LastMonth.TotalDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -357,7 +357,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.LastMonth.TotalBalls[i].User.Name</td>
+                                    <td @(Model.LastMonth.TotalBalls[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.TotalBalls[i].User.Name</td>
                                     <td>@Model.LastMonth.TotalBalls[i].Value 球</td>
                                 </tr>
                             }
