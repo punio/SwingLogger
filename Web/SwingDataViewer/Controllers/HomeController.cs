@@ -26,6 +26,10 @@ namespace SwingDataViewer.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var viewModel = new HomeViewModel();
+
+			var loggers = await _tableService.GetRegisterdLoggers();
+			var allLoggers = loggers.Select(l => new User { Id = l.DeviceId, Name = (l.Public ? l.Name : "？？？"), Unknown = !l.Public }).ToArray();
+
 			viewModel.Loggers = (await _tableService.GetRegisterdLoggers())
 				.Where(l => l.IncomingData && l.Public)
 				.Select(l => new User { Id = l.DeviceId, Name = l.Name })
@@ -33,11 +37,11 @@ namespace SwingDataViewer.Controllers
 
 			var targetTime = DateTime.UtcNow;
 			var summary = await _tableService.GetSummary(targetTime);
-			viewModel.ThisMonth = MakeRnakingData(viewModel.Loggers, summary);
+			viewModel.ThisMonth = MakeRnakingData(allLoggers, summary);
 			viewModel.ThisMonth.TargetDate = $"{targetTime:yyyy年MM月}";
 			targetTime = targetTime.AddMonths(-1);
 			summary = await _tableService.GetSummary(targetTime);
-			viewModel.LastMonth = MakeRnakingData(viewModel.Loggers, summary);
+			viewModel.LastMonth = MakeRnakingData(allLoggers, summary);
 			viewModel.LastMonth.TargetDate = $"{targetTime:yyyy年MM月}";
 
 			return View(viewModel);

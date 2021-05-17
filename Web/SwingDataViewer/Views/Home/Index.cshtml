@@ -17,11 +17,7 @@
     <h1>よくわからないランキング</h1>
     <div class="onepoint">
         <p>
-            収集したデータは集計しているので、データを公開してくれている方でランキングを作ってみました。
-            @if (User.Identity.IsAuthenticated)
-            {<br />
-                <a asp-controller="User" asp-action="Index">ユーザー情報の編集</a> <text>で公開設定にすればいつでも参加できるよ</text>
-            }
+            収集したデータは集計しているのでランキングを作ってみました。
         </p>
     </div>
 
@@ -40,7 +36,7 @@
                             {
                                 <tr>
                                     <th scope="row">@(i + 1)</th>
-                                    <td>@Model.ThisMonth.MaxHeadSpeed[i].User.Name</td>
+                                    <td @(Model.ThisMonth.MaxHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MaxHeadSpeed[i].User.Name</td>
                                     <td>@Model.ThisMonth.MaxHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
