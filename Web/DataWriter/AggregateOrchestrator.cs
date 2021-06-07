@@ -111,15 +111,19 @@ namespace DataWriter
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
 
-				summary = new SwingSummaryEntity
+				var hsList = ExcludeErrors(temp).ToArray();
+				if (hsList.Length > 0)
 				{
-					PartitionKey = $"{from:yyyyMM}",
-					RowKey = $"{logger}_{SummaryType.MaxHeadSpeed}",
-					DeviceId = logger,
-					Type = (int)SummaryType.MaxHeadSpeed,
-					Result = temp.Max(d => d.HeadSpeed)
-				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+					summary = new SwingSummaryEntity
+					{
+						PartitionKey = $"{from:yyyyMM}",
+						RowKey = $"{logger}_{SummaryType.MaxHeadSpeed}",
+						DeviceId = logger,
+						Type = (int)SummaryType.MaxHeadSpeed,
+						Result = hsList.Max(d => d.HeadSpeed)
+					};
+					tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				}
 
 				summary = new SwingSummaryEntity
 				{
@@ -265,5 +269,14 @@ namespace DataWriter
 			return values.OrderBy(v => v).Skip(exCount).Take(values.Length - exCount * 2).Average();
 		}
 
+		/// <summary>
+		/// ウッドでミート率1.10未満は測定エラーとして除外(最大ヘッドスピードの計算用)
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		private static IEnumerable<SwingDataEntity> ExcludeErrors(SwingDataEntity[] data)
+		{
+			return data.Where(d => d.Club > (int)ClubType.W9 || d.Meet > 110);
+		}
 	}
 }
