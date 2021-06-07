@@ -208,6 +208,34 @@ namespace SwingDataViewer.Controllers
 				.ToArray();
 			#endregion
 
+			#region Just50Yard
+			result.Just50Yard = summary
+				.Where(s => s.DataType == SummaryType.Just50Yard)
+				.OrderByDescending(s => s.Result)
+				.Select(s => new SummaryData
+				{
+					Value = s.Result.ToString(),
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+				})
+				.Where(s => s.User != null)
+				.Take(5)
+				.ToArray();
+			#endregion
+
+			#region Just100Yard
+			result.Just100Yard = summary
+				.Where(s => s.DataType == SummaryType.Just100Yard)
+				.OrderByDescending(s => s.Result)
+				.Select(s => new SummaryData
+				{
+					Value = s.Result.ToString(),
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+				})
+				.Where(s => s.User != null)
+				.Take(5)
+				.ToArray();
+			#endregion
+
 			return result;
 		}
 	}

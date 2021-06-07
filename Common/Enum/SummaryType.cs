@@ -13,6 +13,8 @@ namespace SwingCommon.Enum
 		MinMeetRate,
 		MaxDistance,
 		MinDistance,
-		TotalBalls
+		TotalBalls,
+		Just50Yard,
+		Just100Yard
 	}
 }

@@ -199,6 +199,50 @@
                     </table>
                 </div>
             </div>
+
+            <div class="card mb-2">
+                <div class="card-header">
+                    <span class="comment">狙うと難しい</span>
+                    <h4 class="card-title">50ヤード</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            @for (var i = 0; i < Model.ThisMonth.Just50Yard.Length; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td @(Model.ThisMonth.Just50Yard[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.Just50Yard[i].User.Name</td>
+                                    <td class="multi">
+                                        @Model.ThisMonth.Just50Yard[i].Value 回
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mb-2">
+                <div class="card-header">
+                    <span class="comment">スコアアップの鍵</span>
+                    <h4 class="card-title">💯ヤード</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            @for (var i = 0; i < Model.ThisMonth.Just100Yard.Length; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td @(Model.ThisMonth.Just100Yard[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.Just100Yard[i].User.Name</td>
+                                    <td>@Model.ThisMonth.Just100Yard[i].Value 回</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -359,6 +403,46 @@
                                     <th scope="row">@(i + 1)</th>
                                     <td @(Model.LastMonth.TotalBalls[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.TotalBalls[i].User.Name</td>
                                     <td>@Model.LastMonth.TotalBalls[i].Value 球</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mb-2">
+                <div class="card-header">
+                    <h4 class="card-title">50ヤード</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            @for (var i = 0; i < Model.LastMonth.Just50Yard.Length; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td @(Model.LastMonth.Just50Yard[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.Just50Yard[i].User.Name</td>
+                                    <td>@Model.LastMonth.Just50Yard[i].Value 回</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mb-2">
+                <div class="card-header">
+                    <h4 class="card-title">100ヤード</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            @for (var i = 0; i < Model.LastMonth.Just100Yard.Length; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i + 1)</th>
+                                    <td @(Model.LastMonth.Just100Yard[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.Just100Yard[i].User.Name</td>
+                                    <td>@Model.LastMonth.Just100Yard[i].Value 回</td>
                                 </tr>
                             }
                         </tbody>

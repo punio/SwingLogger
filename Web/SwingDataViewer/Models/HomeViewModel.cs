@@ -33,6 +33,8 @@ namespace SwingDataViewer.Models
 		public SummaryData[] MaxDistance { get; set; }
 		public SummaryData[] MinDistance { get; set; }
 		public SummaryData[] TotalBalls { get; set; }
+		public SummaryData[] Just50Yard { get; set; }
+		public SummaryData[] Just100Yard { get; set; }
 	}
 
 	public class SummaryData

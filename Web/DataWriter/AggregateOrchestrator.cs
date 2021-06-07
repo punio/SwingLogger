@@ -185,6 +185,30 @@ namespace DataWriter
 				};
 				tableOperations.Add(TableOperation.InsertOrMerge(summary));
 
+				var count = temp.Count(d => d.Distance == 50);
+				if (count > 0) {
+					summary = new SwingSummaryEntity
+					{
+						PartitionKey = $"{from:yyyyMM}",
+						RowKey = $"{logger}_{SummaryType.Just50Yard}",
+						DeviceId = logger,
+						Type = (int)SummaryType.Just50Yard,
+						Result = count
+					};
+					tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				}
+				count = temp.Count(d => d.Distance == 100);
+				if (count > 0) {
+					summary = new SwingSummaryEntity
+					{
+						PartitionKey = $"{from:yyyyMM}",
+						RowKey = $"{logger}_{SummaryType.Just100Yard}",
+						DeviceId = logger,
+						Type = (int)SummaryType.Just100Yard,
+						Result = count
+					};
+					tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				}
 
 				var summaryTable = await binder.BindAsync<CloudTable>(new TableAttribute("SwingSummary"));
 				await summaryTable.CreateIfNotExistsAsync();
