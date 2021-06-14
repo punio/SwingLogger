@@ -35,8 +35,8 @@
                             @for (var i = 0; i < Model.ThisMonth.MaxHeadSpeed.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.MaxHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MaxHeadSpeed[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.MaxHeadSpeed))</th>
+                                    <td @(Model.ThisMonth.MaxHeadSpeed[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.MaxHeadSpeed[i].User.Name</td>
                                     <td>@Model.ThisMonth.MaxHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -56,8 +56,8 @@
                             @for (var i = 0; i < Model.ThisMonth.MinHeadSpeed.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.MinHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MinHeadSpeed[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.MinHeadSpeed))</th>
+                                    <td @(Model.ThisMonth.MinHeadSpeed[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.MinHeadSpeed[i].User.Name</td>
                                     <td>@Model.ThisMonth.MinHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -77,8 +77,8 @@
                             @for (var i = 0; i < Model.ThisMonth.MaxDistance.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.MaxDistance[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MaxDistance[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.MaxDistance))</th>
+                                    <td @(Model.ThisMonth.MaxDistance[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.MaxDistance[i].User.Name</td>
                                     <td>@Model.ThisMonth.MaxDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -98,8 +98,8 @@
                             @for (var i = 0; i < Model.ThisMonth.MinDistance.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.MinDistance[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MinDistance[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.MinDistance))</th>
+                                    <td @(Model.ThisMonth.MinDistance[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.MinDistance[i].User.Name</td>
                                     <td>@Model.ThisMonth.MinDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -119,8 +119,8 @@
                             @for (var i = 0; i < Model.ThisMonth.MaxMeetRate.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.MaxMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MaxMeetRate[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.MaxMeetRate))</th>
+                                    <td @(Model.ThisMonth.MaxMeetRate[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.MaxMeetRate[i].User.Name</td>
                                     <td>@Model.ThisMonth.MaxMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -140,8 +140,8 @@
                             @for (var i = 0; i < Model.ThisMonth.MinMeetRate.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.MinMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.MinMeetRate[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.MinMeetRate))</th>
+                                    <td @(Model.ThisMonth.MinMeetRate[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.MinMeetRate[i].User.Name</td>
                                     <td>@Model.ThisMonth.MinMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -161,8 +161,8 @@
                             @for (var i = 0; i < Model.ThisMonth.TotalDistance.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.TotalDistance[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.TotalDistance[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.TotalDistance))</th>
+                                    <td @(Model.ThisMonth.TotalDistance[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.TotalDistance[i].User.Name</td>
                                     <td class="multi">
                                         @Model.ThisMonth.TotalDistance[i].Value ヤード
                                         <br />
@@ -190,8 +190,8 @@
                             @for (var i = 0; i < Model.ThisMonth.TotalBalls.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.TotalBalls[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.TotalBalls[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.TotalBalls))</th>
+                                    <td @(Model.ThisMonth.TotalBalls[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.TotalBalls[i].User.Name</td>
                                     <td>@Model.ThisMonth.TotalBalls[i].Value 球</td>
                                 </tr>
                             }
@@ -211,8 +211,8 @@
                             @for (var i = 0; i < Model.ThisMonth.Just50Yard.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.Just50Yard[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.Just50Yard[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.Just50Yard))</th>
+                                    <td @(Model.ThisMonth.Just50Yard[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.Just50Yard[i].User.Name</td>
                                     <td class="multi">
                                         @Model.ThisMonth.Just50Yard[i].Value 回
                                     </td>
@@ -234,8 +234,8 @@
                             @for (var i = 0; i < Model.ThisMonth.Just100Yard.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.ThisMonth.Just100Yard[i].User.Unknown ? "class=unknown":"")>@Model.ThisMonth.Just100Yard[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.ThisMonth.Just100Yard))</th>
+                                    <td @(Model.ThisMonth.Just100Yard[i].User.Unknown ? "class=unknown" : "")>@Model.ThisMonth.Just100Yard[i].User.Name</td>
                                     <td>@Model.ThisMonth.Just100Yard[i].Value 回</td>
                                 </tr>
                             }
@@ -260,8 +260,8 @@
                             @for (var i = 0; i < Model.LastMonth.MaxHeadSpeed.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.MaxHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MaxHeadSpeed[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.MaxHeadSpeed))</th>
+                                    <td @(Model.LastMonth.MaxHeadSpeed[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.MaxHeadSpeed[i].User.Name</td>
                                     <td>@Model.LastMonth.MaxHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -280,8 +280,8 @@
                             @for (var i = 0; i < Model.LastMonth.MinHeadSpeed.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.MinHeadSpeed[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MinHeadSpeed[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.MinHeadSpeed))</th>
+                                    <td @(Model.LastMonth.MinHeadSpeed[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.MinHeadSpeed[i].User.Name</td>
                                     <td>@Model.LastMonth.MinHeadSpeed[i].Value m/s</td>
                                 </tr>
                             }
@@ -300,8 +300,8 @@
                             @for (var i = 0; i < Model.LastMonth.MaxDistance.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.MaxDistance[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MaxDistance[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.MaxDistance))</th>
+                                    <td @(Model.LastMonth.MaxDistance[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.MaxDistance[i].User.Name</td>
                                     <td>@Model.LastMonth.MaxDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -320,8 +320,8 @@
                             @for (var i = 0; i < Model.LastMonth.MinDistance.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.MinDistance[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MinDistance[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.MinDistance))</th>
+                                    <td @(Model.LastMonth.MinDistance[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.MinDistance[i].User.Name</td>
                                     <td>@Model.LastMonth.MinDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -340,8 +340,8 @@
                             @for (var i = 0; i < Model.LastMonth.MaxMeetRate.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.MaxMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MaxMeetRate[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.MaxMeetRate))</th>
+                                    <td @(Model.LastMonth.MaxMeetRate[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.MaxMeetRate[i].User.Name</td>
                                     <td>@Model.LastMonth.MaxMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -360,8 +360,8 @@
                             @for (var i = 0; i < Model.LastMonth.MinMeetRate.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.MinMeetRate[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.MinMeetRate[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.MinMeetRate))</th>
+                                    <td @(Model.LastMonth.MinMeetRate[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.MinMeetRate[i].User.Name</td>
                                     <td>@Model.LastMonth.MinMeetRate[i].Value</td>
                                 </tr>
                             }
@@ -380,8 +380,8 @@
                             @for (var i = 0; i < Model.LastMonth.TotalDistance.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.TotalDistance[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.TotalDistance[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.TotalDistance))</th>
+                                    <td @(Model.LastMonth.TotalDistance[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.TotalDistance[i].User.Name</td>
                                     <td>@Model.LastMonth.TotalDistance[i].Value ヤード</td>
                                 </tr>
                             }
@@ -400,8 +400,8 @@
                             @for (var i = 0; i < Model.LastMonth.TotalBalls.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.TotalBalls[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.TotalBalls[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.TotalBalls))</th>
+                                    <td @(Model.LastMonth.TotalBalls[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.TotalBalls[i].User.Name</td>
                                     <td>@Model.LastMonth.TotalBalls[i].Value 球</td>
                                 </tr>
                             }
@@ -420,8 +420,8 @@
                             @for (var i = 0; i < Model.LastMonth.Just50Yard.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.Just50Yard[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.Just50Yard[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.Just50Yard))</th>
+                                    <td @(Model.LastMonth.Just50Yard[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.Just50Yard[i].User.Name</td>
                                     <td>@Model.LastMonth.Just50Yard[i].Value 回</td>
                                 </tr>
                             }
@@ -440,8 +440,8 @@
                             @for (var i = 0; i < Model.LastMonth.Just100Yard.Length; i++)
                             {
                                 <tr>
-                                    <th scope="row">@(i + 1)</th>
-                                    <td @(Model.LastMonth.Just100Yard[i].User.Unknown ? "class=unknown":"")>@Model.LastMonth.Just100Yard[i].User.Name</td>
+                                    <th scope="row">@(SummaryFunction.GetRankNumber(i, Model.LastMonth.Just100Yard))</th>
+                                    <td @(Model.LastMonth.Just100Yard[i].User.Unknown ? "class=unknown" : "")>@Model.LastMonth.Just100Yard[i].User.Name</td>
                                     <td>@Model.LastMonth.Just100Yard[i].Value 回</td>
                                 </tr>
                             }

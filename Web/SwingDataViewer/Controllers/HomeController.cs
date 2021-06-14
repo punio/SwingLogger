@@ -103,7 +103,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = s.Result.ToString(),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -117,7 +118,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = (s.Result / 10.0).ToString("f1"),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -131,7 +133,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = (s.Result / 10.0).ToString("f1"),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = long.MaxValue - s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -145,7 +148,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = (s.Result / 100.0).ToString("f2"),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -159,7 +163,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = (s.Result / 100.0).ToString("f2"),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = long.MaxValue - s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -173,7 +178,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = s.Result.ToString(),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -187,7 +193,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = s.Result.ToString(),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = long.MaxValue - s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -201,7 +208,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = s.Result.ToString(),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -215,7 +223,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = s.Result.ToString(),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)
@@ -229,7 +238,8 @@ namespace SwingDataViewer.Controllers
 				.Select(s => new SummaryData
 				{
 					Value = s.Result.ToString(),
-					User = users.FirstOrDefault(u => u.Id == s.DeviceId)
+					User = users.FirstOrDefault(u => u.Id == s.DeviceId),
+					SortValue = s.Result
 				})
 				.Where(s => s.User != null)
 				.Take(5)

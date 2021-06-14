@@ -41,5 +41,6 @@ namespace SwingDataViewer.Models
 	{
 		public string Value { get; set; }
 		public User User { get; set; }
+		public long SortValue { get; set; }	// 大きい順(大きい方が上位)にしておこうか
 	}
 }
