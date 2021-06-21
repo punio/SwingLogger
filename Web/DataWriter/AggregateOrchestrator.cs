@@ -91,7 +91,7 @@ namespace DataWriter
 				do
 				{
 					var entities = await table.ExecuteQuerySegmentedAsync(query, token);
-					dataEntities.AddRange(entities.Where(e => e.BallSpeed > 0));
+					dataEntities.AddRange(entities.Where(e => e.Club != (int)ClubType.PT && e.BallSpeed > 0));
 					token = entities.ContinuationToken;
 				} while (token != null);
 
