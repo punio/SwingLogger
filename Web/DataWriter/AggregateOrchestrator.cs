@@ -300,7 +300,9 @@ namespace DataWriter
 		/// <returns></returns>
 		private static IEnumerable<SwingDataEntity> ExcludeErrors(SwingDataEntity[] data)
 		{
-			return data.Where(d => d.Club > (int)ClubType.W9 || d.Meet > 110);
+			return data.Where(d => d.Club > (int)ClubType.I6 || 
+			                       (d.Club <= (int)ClubType.W9 && d.Meet > 110) ||
+			                       (d.Club <= (int)ClubType.I6 && d.Meet > 105));
 		}
 	}
 }
