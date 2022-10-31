@@ -1,9 +1,9 @@
+using Azure.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DataWriter.Entities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -11,47 +11,48 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
 using SwingCommon;
+using SwingCommon.Entities;
 using SwingCommon.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataWriter
 {
-	public static class AggregateOrchestrator
+	public class AggregateOrchestrator
 	{
+		private readonly ILogger _logger;
+		private readonly TableServiceClient _tableServiceClient;
+
+		public AggregateOrchestrator(TableServiceClient tableServiceClient, ILogger<AggregateOrchestrator> logger)
+		{
+			_logger = logger;
+			_tableServiceClient = tableServiceClient;
+		}
+
 		[FunctionName("AggregateOrchestrator")]
-		public static async Task RunOrchestrator(
+		public async Task RunOrchestrator(
 			[OrchestrationTrigger] IDurableOrchestrationContext context)
 		{
 			var loggers = await context.CallActivityAsync<SwingLoggerEntity[]>("AggregateOrchestrator_LoggerList", null);
 			foreach (var logger in loggers)
 			{
-				if ((DateTimeOffset.UtcNow - logger.Timestamp).TotalDays >= 3.1) continue;  // 更新無ければ集計は意味無いからね (漏れないと思うけど一応更新後3日間は集計)
+				if ((DateTimeOffset.UtcNow - logger.Timestamp.Value).TotalDays >= 3.1) continue;  // 更新無ければ集計は意味無いからね (漏れないと思うけど一応更新後3日間は集計)
 				await context.CallActivityAsync("AggregateOrchestrator_Aggregate", logger.DeviceId);
 			}
 		}
 
 		[FunctionName("AggregateOrchestrator_LoggerList")]
-		public static async Task<SwingLoggerEntity[]> LoggerList([ActivityTrigger] IDurableActivityContext context,
-			Binder binder,
+		public async Task<SwingLoggerEntity[]> LoggerList([ActivityTrigger] IDurableActivityContext context,
 			ILogger log)
 		{
-			var table = await binder.BindAsync<CloudTable>(new TableAttribute("SwingLogger"));
-			var query = new TableQuery<SwingLoggerEntity>();
-			query.FilterString = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "0");
-			TableContinuationToken token = null;
 			var result = new List<SwingLoggerEntity>();
-			do
-			{
-				var entities = await table.ExecuteQuerySegmentedAsync(query, token);
-				result.AddRange(entities);
-				token = entities.ContinuationToken;
-			} while (token != null);
+			var entities = await SwingLoggerEntity.QueryAsync(_tableServiceClient, x => x.PartitionKey == "0");
+			await foreach (var e in entities) result.Add(e);
 
 			return result.ToArray();
 		}
 
 		[FunctionName("AggregateOrchestrator_Aggregate")]
-		public static async Task Aggregate([ActivityTrigger] IDurableActivityContext activityContext,
-			Binder binder,
+		public async Task Aggregate([ActivityTrigger] IDurableActivityContext activityContext,
 			ExecutionContext context,
 			ILogger log)
 		{
@@ -76,29 +77,16 @@ namespace DataWriter
 
 				log.LogInformation($"Correct : {from} - {to}");
 
-				var table = await binder.BindAsync<CloudTable>(new TableAttribute("SwingData"));
-				var query = new TableQuery<SwingDataEntity>();
-				query.FilterString = TableQuery.CombineFilters(
-					TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, logger),
-					TableOperators.And,
-					TableQuery.CombineFilters(
-						TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThanOrEqual, rowKeyFrom),
-						TableOperators.And,
-						TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.LessThanOrEqual, rowKeyTo)));
-
-				TableContinuationToken token = null;
 				var dataEntities = new List<SwingDataEntity>();
-				do
+				var entities = await SwingDataEntity.QueryAsync(_tableServiceClient, x => x.PartitionKey == logger
+								  && string.Compare(x.RowKey, rowKeyFrom, StringComparison.Ordinal) >= 0 && string.Compare(x.RowKey, rowKeyTo, StringComparison.Ordinal) <= 0);
+				await foreach (var e in entities)
 				{
-					var entities = await table.ExecuteQuerySegmentedAsync(query, token);
-					dataEntities.AddRange(entities.Where(e => e.Club != (int)ClubType.PT && e.BallSpeed > 0));
-					token = entities.ContinuationToken;
-				} while (token != null);
+					if (e.Club != (int)ClubType.PT && e.BallSpeed > 0) dataEntities.Add(e);
+				}
 
 				var temp = dataEntities.ToArray();
 				if (temp.Length <= 0) return;
-
-				var tableOperations = new TableBatchOperation();
 
 				#region 集計
 				var summary = new SwingSummaryEntity
@@ -109,7 +97,7 @@ namespace DataWriter
 					Type = (int)SummaryType.TotalDistance,
 					Result = temp.Sum(d => d.Distance)
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				var hsList = ExcludeErrors(temp).ToArray();
 				if (hsList.Length > 0)
@@ -122,7 +110,7 @@ namespace DataWriter
 						Type = (int)SummaryType.MaxHeadSpeed,
 						Result = hsList.Max(d => d.HeadSpeed)
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(summary));
+					await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 				}
 
 				summary = new SwingSummaryEntity
@@ -133,7 +121,7 @@ namespace DataWriter
 					Type = (int)SummaryType.MinHeadSpeed,
 					Result = temp.Min(d => d.HeadSpeed)
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				summary = new SwingSummaryEntity
 				{
@@ -143,7 +131,7 @@ namespace DataWriter
 					Type = (int)SummaryType.MaxMeetRate,
 					Result = temp.Max(d => d.Meet)
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				summary = new SwingSummaryEntity
 				{
@@ -153,7 +141,7 @@ namespace DataWriter
 					Type = (int)SummaryType.MinMeetRate,
 					Result = temp.Min(d => d.Meet)
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				summary = new SwingSummaryEntity
 				{
@@ -163,7 +151,7 @@ namespace DataWriter
 					Type = (int)SummaryType.TotalBalls,
 					Result = temp.Length
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				summary = new SwingSummaryEntity
 				{
@@ -173,7 +161,7 @@ namespace DataWriter
 					Type = (int)SummaryType.MaxDistance,
 					Result = temp.Max(d => d.Distance)
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				summary = new SwingSummaryEntity
 				{
@@ -183,10 +171,11 @@ namespace DataWriter
 					Type = (int)SummaryType.MinDistance,
 					Result = temp.Min(d => d.Distance)
 				};
-				tableOperations.Add(TableOperation.InsertOrMerge(summary));
+				await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 
 				var count = temp.Count(d => d.Distance == 50);
-				if (count > 0) {
+				if (count > 0)
+				{
 					summary = new SwingSummaryEntity
 					{
 						PartitionKey = $"{from:yyyyMM}",
@@ -195,10 +184,11 @@ namespace DataWriter
 						Type = (int)SummaryType.Just50Yard,
 						Result = count
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(summary));
+					await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 				}
 				count = temp.Count(d => d.Distance == 100);
-				if (count > 0) {
+				if (count > 0)
+				{
 					summary = new SwingSummaryEntity
 					{
 						PartitionKey = $"{from:yyyyMM}",
@@ -207,13 +197,8 @@ namespace DataWriter
 						Type = (int)SummaryType.Just100Yard,
 						Result = count
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(summary));
+					await SwingSummaryEntity.UpsertAsync(_tableServiceClient, summary);
 				}
-
-				var summaryTable = await binder.BindAsync<CloudTable>(new TableAttribute("SwingSummary"));
-				await summaryTable.CreateIfNotExistsAsync();
-				await summaryTable.ExecuteBatchAsync(tableOperations);
-				tableOperations.Clear();
 				#endregion
 
 				#region 統計
@@ -232,7 +217,7 @@ namespace DataWriter
 						Type = (int)SwingStatisticsEntity.StatisticsType.HeadSpeedAverage,
 						Result = Average(clubData.Select(c => c.HeadSpeed).ToArray())
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(stat));
+					await SwingStatisticsEntity.UpsertAsync(_tableServiceClient, stat);
 
 					stat = new SwingStatisticsEntity
 					{
@@ -243,7 +228,7 @@ namespace DataWriter
 						Type = (int)SwingStatisticsEntity.StatisticsType.BallSpeedAverage,
 						Result = Average(clubData.Select(c => c.BallSpeed).ToArray())
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(stat));
+					await SwingStatisticsEntity.UpsertAsync(_tableServiceClient, stat);
 
 					stat = new SwingStatisticsEntity
 					{
@@ -254,7 +239,7 @@ namespace DataWriter
 						Type = (int)SwingStatisticsEntity.StatisticsType.DistanceAverage,
 						Result = Average(clubData.Select(c => c.Distance).ToArray())
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(stat));
+					await SwingStatisticsEntity.UpsertAsync(_tableServiceClient, stat);
 
 					stat = new SwingStatisticsEntity
 					{
@@ -265,7 +250,7 @@ namespace DataWriter
 						Type = (int)SwingStatisticsEntity.StatisticsType.MeetAverage,
 						Result = Average(clubData.Select(c => c.Meet).ToArray())
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(stat));
+					await SwingStatisticsEntity.UpsertAsync(_tableServiceClient, stat);
 
 					stat = new SwingStatisticsEntity
 					{
@@ -276,12 +261,8 @@ namespace DataWriter
 						Type = (int)SwingStatisticsEntity.StatisticsType.TotalBalls,
 						Result = clubData.Count()
 					};
-					tableOperations.Add(TableOperation.InsertOrMerge(stat));
+					await SwingStatisticsEntity.UpsertAsync(_tableServiceClient, stat);
 				}
-				var statTable = await binder.BindAsync<CloudTable>(new TableAttribute("SwingStatistics"));
-				await statTable.CreateIfNotExistsAsync();
-				await statTable.ExecuteBatchAsync(tableOperations);
-				tableOperations.Clear();
 				#endregion
 			}
 		}
@@ -300,9 +281,9 @@ namespace DataWriter
 		/// <returns></returns>
 		private static IEnumerable<SwingDataEntity> ExcludeErrors(SwingDataEntity[] data)
 		{
-			return data.Where(d => d.Club > (int)ClubType.I6 || 
-			                       ((int)ClubType.W1 <= d.Club && d.Club <= (int)ClubType.W9 && d.Meet > 110) ||
-			                       ((int)ClubType.U2 <= d.Club && d.Club <= (int)ClubType.I6 && d.Meet > 105));
+			return data.Where(d => d.Club > (int)ClubType.I6 ||
+								   ((int)ClubType.W1 <= d.Club && d.Club <= (int)ClubType.W9 && d.Meet > 110) ||
+								   ((int)ClubType.U2 <= d.Club && d.Club <= (int)ClubType.I6 && d.Meet > 105));
 		}
 	}
 }

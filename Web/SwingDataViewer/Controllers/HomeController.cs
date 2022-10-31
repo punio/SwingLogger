@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SwingCommon.Entities;
 using SwingCommon.Enum;
-using SwingDataViewer.Entities;
 using SwingDataViewer.Models;
 using SwingDataViewer.Services;
 

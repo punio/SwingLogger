@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.WindowsAzure.Storage;
 using SwingDataViewer.Services;
 
 namespace SwingDataViewer
@@ -60,7 +60,10 @@ namespace SwingDataViewer
 				});
 
 
-			services.AddScoped(provider => CloudStorageAccount.Parse(Configuration.GetConnectionString("DefaultStorageConnection")));
+			services.AddAzureClients(builder =>
+			{
+				builder.AddTableServiceClient(Configuration.GetConnectionString("DefaultStorageConnection"));
+			});
 			services.AddScoped<TableService>();
 
 			services.AddLocalization(options => options.ResourcesPath = "Views");

@@ -1,9 +1,9 @@
+using Azure.Data.Tables;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using DataWriter.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -12,40 +12,42 @@ using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using SwingCommon;
+using SwingCommon.Entities;
+using SwingCommon.Function;
 
 namespace DataWriter
 {
-	public static class Upload
+	public class Upload
 	{
+		private readonly ILogger _logger;
+		private readonly TableServiceClient _tableServiceClient;
+
+		public Upload(TableServiceClient tableServiceClient, ILogger<Upload> logger)
+		{
+			_logger = logger;
+			_tableServiceClient = tableServiceClient;
+		}
+
 		[FunctionName("Upload")]
-		public static async Task<IActionResult> Run(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-			[Table("SwingData")] CloudTable dataTable,
-			[Table("SwingLogger")] CloudTable loggerTable,
-			ILogger log)
+		public async Task<IActionResult> Run(
+			[HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req)
 		{
 			SwingData request = null;
 			if (req.Headers.TryGetValue("Content-Encoding", out var value))
 			{
 				if (value.Any(c => c == "gzip"))
 				{
-					using (var decompressionStream = new GZipStream(req.Body, CompressionMode.Decompress))
-					{
-						using (var reader = new StreamReader(decompressionStream))
-						{
-							request = JsonConvert.DeserializeObject<SwingData>(reader.ReadToEnd());
-						}
-					}
+					await using var decompressionStream = new GZipStream(req.Body, CompressionMode.Decompress);
+					using var reader = new StreamReader(decompressionStream);
+					request = JsonConvert.DeserializeObject<SwingData>(await reader.ReadToEndAsync());
 				}
 			}
 			if (request == null)
 			{
 				try
 				{
-					using (var reader = new StreamReader(req.Body))
-					{
-						request = JsonConvert.DeserializeObject<SwingData>(reader.ReadToEnd());
-					}
+					using var reader = new StreamReader(req.Body);
+					request = JsonConvert.DeserializeObject<SwingData>(await reader.ReadToEndAsync());
 				}
 				catch { }
 			}
@@ -71,19 +73,15 @@ namespace DataWriter
 				Tag = request.Tag
 			};
 
-			await dataTable.ExecuteAsync(TableOperation.InsertOrMerge(data));
+			await SwingDataEntity.UpsertAsync(_tableServiceClient, data);
 
 
-			var tableQuery = new TableQuery<SwingLoggerEntity>();
-			tableQuery.FilterString = TableQuery.CombineFilters(
-				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "0"),
-				TableOperators.And,
-				TableQuery.GenerateFilterCondition("DeviceId", QueryComparisons.Equal, request.User));
-			var logger = (await loggerTable.ExecuteQuerySegmentedAsync(tableQuery, null)).FirstOrDefault();
+			var logger = await (await SwingLoggerEntity.QueryAsync(_tableServiceClient, x => x.PartitionKey == "0" && x.RowKey == request.User)).FirstOrDefault();
 			if (logger != null)
 			{
 				logger.IncomingData = true;
-				await loggerTable.ExecuteAsync(TableOperation.Merge(logger));
+				logger.ETag = Azure.ETag.All;
+				await SwingLoggerEntity.UpsertAsync(_tableServiceClient, logger);
 			}
 
 			return new OkResult();
